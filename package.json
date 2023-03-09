@@ -1,0 +1,37 @@
+{
+  "name": "hellocopter_repo",
+  "version": "1.0.0",
+  "description": "This project will allow me to develop my skills with vanilla JavaScript and the Canvas API. The result will be a functional sidescrolling helicopter game, rendered in 2D, featuring pixel art, collision detection, simple animations, intertia-like and gravity-like behavior, moving enemies, and victory/defeat logic. Reach goals include background parallax, dynamic enemies, and multiple canvases and levels.",
+  "main": "index.js",
+  "browserslist": [
+    "defaults"
+  ],
+  "scripts": {
+    "watch": "webpack --watch --mode=development",
+    "build": "webpack --mode=production"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wtdavis/hellocopter_js_project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wtdavis/hellocopter_js_project/issues"
+  },
+  "homepage": "https://github.com/wtdavis/hellocopter_js_project#readme",
+  "dependencies": {
+    "@babel/core": "^7.21.0",
+    "@babel/preset-env": "^7.20.2",
+    "babel-loader": "^9.1.2",
+    "core-js": "^3.29.0",
+    "css-loader": "^6.7.3",
+    "mini-css-extract-plugin": "^2.7.3",
+    "regenerator-runtime": "^0.13.11",
+    "sass": "^1.58.3",
+    "sass-loader": "^13.2.0",
+    "webpack": "^5.76.0",
+    "webpack-cli": "^5.0.1"
+  }
+}
