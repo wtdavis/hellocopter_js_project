@@ -21,7 +21,7 @@ In Hellocopter, players will be able to:
 -Facts about capybaras
 
 ## Project Layout Preview
-
+![mockup](./copter_mockup.png.png)
 
 ## Technologies, Libraries, APIs
 This project will use Canvas to render the game in a browser window, Javascript for the game logic, and Webpack to transpile the JS files. \
