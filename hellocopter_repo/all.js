@@ -8,10 +8,10 @@ const canvas = document.getElementById("game_canvas")
 const ctx = canvas.getContext("2d")
 canvas.width = 1000;
 canvas.height = 500;
-let guntimer = 0
+let gunTimer = 0
 
 class Enemy{
-    constructor(x, y, width, height, lift, speed, gun, image) {
+    constructor(x, y, width, height, lift, speed, gun, bullets, timer, gunAngle, bulletSize, image) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -20,11 +20,16 @@ class Enemy{
         this.speed = speed;
         this.relevant = true;
         this.gun = gun
-        // this.image = document.getElementById(image);
+        this.bullets = bullets
+        this.timer = timer
+        this.counter = 0
+        this.gunAngle = gunAngle
+        this.bulletSize = bulletSize
+        // this.image = document.getElementById(image);d
     }
 
     draw(ctx) {
-        ctx.fillStyle = "white"
+        ctx.fillStyle = "red"
         ctx.fillRect(this.x, this.y, this.width, this.height)
         // context.drawImage(this.image, sx, sy, swidth, sheight, drawx, drawy, width, height)
     }
@@ -52,20 +57,30 @@ class Enemy{
         }
     }
 
-    
+    fireControl() {
+        // let that = this
+        if (this.counter > this.timer) {
+            for (let i = 0; i < this.bullets; i++){
+               this.fire()
+            }; this.counter = 0
+        } else {this.counter++}
 
-    fire() {
-        for (let i = 0; i < 3; i++) {
-            setInterval(projectiles.push(new Projectile(this.x, this.y, 3, 3, 1, 1)), 2000)
+        // else {gunTimer++; console.log(gunTimer)}
+    }
+
+    fire() { 
+        projectiles.push(new Projectile(this.x + this.width / 2, this.y + this.height / 2, this.bulletSize[0], this.bulletSize[1],
+                                        this.gunAngle[0], this.gunAngle[1]))
+                                    }
 
         }
-    }
-}
+
+
 
 let projectiles = []
 
 class Projectile{
-    constructor(x, y, width, height, lift, speed){
+    constructor(x, y, width, height, speed, lift){
         this.x = x
         this.y = y
         this.width = width
@@ -126,6 +141,17 @@ class InputHandler {
 
 }
 
+class Background {
+    constructor(x, y, width, height){
+        this.x = x
+        this.y = y
+        this.width = width
+        this.height = height
+
+    }
+
+
+}
 class Player  {
     constructor (gameWidth, gameHeight) {
         this.gameWidth = gameWidth
@@ -142,12 +168,16 @@ class Player  {
 }
 
     update(input) {
-        if (input.keys.includes('w') && this.lift < 2) {this.lift += .2}
-        if (!input.keys.includes('w') && this.lift > 0) {this.lift -= .05}
-        if (input.keys.includes('s') && this.lift > -3) {this.lift -= .2}
-        if (!input.keys.includes('s') && this.lift < 0) {this.lift += .04}
-        if (input.keys.includes('a') && this.speed > -3.5) {this.speed -= .1}
-        if (input.keys.includes('d') && this.speed < 3.5) {this.speed += .1}
+        // speed and lift
+            // lift
+        if (input.keys.includes('w') && this.lift < 2) {this.lift += .03}
+        if (!input.keys.includes('w') && this.lift > 0) {this.lift -= .03}
+        if (input.keys.includes('s') && this.lift > -2) {this.lift -= .02}
+        if (!input.keys.includes('s') && this.lift < 0) {this.lift += .03}
+            // speed
+        if (input.keys.includes('a') && this.speed > -3) {this.speed -= .03}
+        if (input.keys.includes('d') && this.speed < 3) {this.speed += .03}
+        // boundary handling
         if ((this.x > this.gameWidth - this.width * 2) && this.speed > 0) {this.speed -= .4}
         if ((this.x < this.width) && this.speed < 0) {this.speed += .4}
         if (this.y < this.height && this.lift > 0) {this.lift -=.4}
@@ -176,13 +206,13 @@ function collision (player, object) {
     // else {player.alive = true}
 }
 
-function enemyHandler(context){
+function enemyHandler(context, timer){
     
     for (let i = 0; i < enemies.length; i++) {
         let currentEnemy = enemies[i]
         currentEnemy.draw(context); collision(player, currentEnemy)
-        // if (currentEnemy.gun === true)
-        // {currentEnemy.fire()}
+        if (currentEnemy.gun === true)
+        {currentEnemy.fireControl()}
         currentEnemy.isRelevant(canvas.width, canvas.height)
             if (!currentEnemy.relevant) {
                 enemies.splice(enemies.indexOf(currentEnemy), 1)
@@ -198,6 +228,7 @@ function projectileHandler (context) {
         let currentProjectile = projectiles[i]
         currentProjectile.draw(context)
         currentProjectile.update()
+        collision(player, currentProjectile)
         currentProjectile.isRelevant(canvas.width, canvas.height)
         if (!currentProjectile.relevant) {
             projectiles.splice(projectiles.indexOf(currentProjectile), 1)
@@ -205,29 +236,40 @@ function projectileHandler (context) {
     }
 }
 
-// let gunTimer = 0
+function gameOver(player) {
+    if (!player.alive )
+    {const endGame = document.createElement("h1")
+    endGame.textContent = "Game Over}"
+}
+}
 
 
+class EnemySpawner {
+    constructor(timer, enemiesList) {
+        this.timer = timer
+        this.counter = 0
+        this.enemiesList = enemiesList
+    }
 
-// function enemySpawner() {
-    
+    spawn(){
+        if (this.counter > this.timer)
+        {}
+    }
 
-//     for (let i = 0; i < enemies.length; i++) {
-
-//     }
-// }
+}
 
 const input = new InputHandler()
 const player = new Player(canvas.width, canvas.height) 
+const background = new Background(0, 0, canvas.width, canvas.height)
 // player.draw(ctx)
 
-const newEnemy = new Enemy(canvas.width/2 , canvas.height - 50 , 50, 50, 0, 0, true)
-const otherEnemy = new Enemy(500, 250, 100, 20, 0, 0, false)
+const newEnemy = new Enemy(canvas.width/2 , canvas.height - 50 , 50, 50, 0, 0, true, 1, 100, [-1, 1], [4,4])
+const otherEnemy = new Enemy(canvas.width/1.2, canvas.height - 50, 50, 50, 0, 0, true, 1, 200, [0, 1], [5,5])
 enemies.push(otherEnemy)
 enemies.push(newEnemy)
 
-ctx.fillStyle = "green"
-ctx.fillRect(250, 100, 50, 50)
+// ctx.fillStyle = "green"
+// ctx.fillRect(250, 100, 50, 50)
 
 let lastTime = 0
 let counter = 0 
@@ -240,10 +282,11 @@ function animate(timeStamp) {
     player.update(input)
     player.draw(ctx)
     // newEnemy.draw(ctx)
-    enemyHandler(ctx)
     projectileHandler(ctx)
+    enemyHandler(ctx)
+    gameOver(player)
     // console.log(timeStamp)
-    requestAnimationFrame(animate)
+    if (player.alive ) {requestAnimationFrame(animate)}
     // if (player.alive) {requestAnimationFrame(animate)}
     //    if (player.alive && counter > 16) {counter = 0; requestAnimationFrame(animate)}
     //    else {animate(timeStamp)}
