@@ -2,13 +2,13 @@
 // import Canvas from "./canvas.js" ****modules! refactor
 
 
-
+let projectiles = []
 let enemies = []
 const canvas = document.getElementById("game_canvas")
 const ctx = canvas.getContext("2d")
 canvas.width = 1000;
 canvas.height = 500;
-let gunTimer = 0
+// let gunTimer = 0
 
 class Enemy{
     constructor(x, y, width, height, lift, speed, gun, bullets, timer, gunAngle, bulletSize, image) {
@@ -18,6 +18,7 @@ class Enemy{
         this.height = height;
         this.lift = lift;
         this.speed = speed;
+        this.relSpeed = 0
         this.relevant = true;
         this.gun = gun
         this.bullets = bullets
@@ -25,13 +26,14 @@ class Enemy{
         this.counter = 0
         this.gunAngle = gunAngle
         this.bulletSize = bulletSize
+        this.image = image
         // this.image = document.getElementById(image);d
     }
 
     draw(ctx) {
         ctx.fillStyle = "red"
         ctx.fillRect(this.x, this.y, this.width, this.height)
-        // context.drawImage(this.image, sx, sy, swidth, sheight, drawx, drawy, width, height)
+        // ctx.drawImage(this.image, sx, sy, swidth, sheight, drawx, drawy, width, height)
     }
     
     isRelevant(gameWidth, gameHeight) {
@@ -50,12 +52,12 @@ class Enemy{
     // }
 
     update(gameWidth, gameHeight) {
-        this.x += this.speed
+        this.x += this.speed + this.relSpeed
         this.y -= this.lift
         if (this.x < 0 || this.x > gameWidth || this.y > gameHeight || this.y < 0) {
-            this.relevant = false
+            this.relevant = false  // don't kick out of queue just don't draw
         }
-    }
+    }d
 
     fireControl() {
         // let that = this
@@ -77,7 +79,6 @@ class Enemy{
 
 
 
-let projectiles = []
 
 class Projectile{
     constructor(x, y, width, height, speed, lift){
@@ -87,6 +88,7 @@ class Projectile{
         this.height = height
         this.lift = lift
         this.speed = speed
+        this.relSpeed = 0
         this.relevant = true
     }
 
@@ -97,7 +99,7 @@ class Projectile{
     }
 
     update() {
-        this.x += this.speed
+        this.x += this.speed + this.relSpeed
         this.y -= this.lift
 
     }
@@ -105,7 +107,7 @@ class Projectile{
     isRelevant(gameWidth, gameHeight) {
         if (this.y + this.height < 0 ||
         this.y > gameHeight ||
-        this.x + this.widhth < 0 ||
+        this.x + this.width < 0 ||
         this.x > gameWidth) {
             this.relevant = false
         }
@@ -142,14 +144,33 @@ class InputHandler {
 }
 
 class Background {
-    constructor(x, y, width, height){
-        this.x = x
-        this.y = y
-        this.width = width
-        this.height = height
-
+    constructor(gameWidth, gameHeight, image){
+        this.x = 0
+        this.y = 0
+        this.gameWidth = gameWidth
+        this.width = gameWidth + this.x
+        this.gameHeight = gameHeight
+        this.image = document.getElementById(image)
+        this.speed = 0
+        
     }
 
+    draw(context) {
+        context.drawImage(this.image, this.x, 0, this.width, this.gameHeight, 0, 0, this.gameWidth, this.gameHeight )
+    }
+
+    update(player, context) {
+        if ((player.x > this.gameWidth - player.width * 3) && this.speed < 2) //and boundary conditions
+            {this.speed += .3; player.relSpeed = -this.speed} 
+            else if (player.x < player.width * 3 && this.speed > -2)
+        this.x += this.speed
+        this.draw(context)
+    }
+
+
+    backgroundHandler(){
+
+    }
 
 }
 class Player  {
@@ -160,11 +181,22 @@ class Player  {
         this.height = 30
         this.x = 0
         this.y = gameHeight - this.height
+        this.relSpeed = 0
         this.speed = 0
         this.lift = 0
         this.alive = true
         this.pickup = false
         this.success = false
+        this.direction = "forward"
+        this.sprites = [[ 50, 110, 230, 68],
+        [ 50 , 170, 230, 70],
+         [50, 240, 230, 70],
+        [ 50, 310, 230, 68]
+        ]
+        this.spriteNum = 0 
+        this.counter = 0
+        this.imageBackward = document.getElementById("game_sprites")
+        this.imageForward = document.getElementById("game_sprites_forward")
 }
 
     update(input) {
@@ -175,23 +207,31 @@ class Player  {
         if (input.keys.includes('s') && this.lift > -2) {this.lift -= .02}
         if (!input.keys.includes('s') && this.lift < 0) {this.lift += .03}
             // speed
-        if (input.keys.includes('a') && this.speed > -3) {this.speed -= .03}
-        if (input.keys.includes('d') && this.speed < 3) {this.speed += .03}
+        if (input.keys.includes('a') && this.speed > -3) {this.speed -= .03; this.direction = "backward"}
+        if (input.keys.includes('d') && this.speed < 3) {this.speed += .03; this.direction = "forward"}
         // boundary handling
         if ((this.x > this.gameWidth - this.width * 2) && this.speed > 0) {this.speed -= .4}
         if ((this.x < this.width) && this.speed < 0) {this.speed += .4}
         if (this.y < this.height && this.lift > 0) {this.lift -=.4}
         if (this.y > this.gameHeight - this.height) {this.lift = 0; this.y = this.gameHeight - this.height; this.speed = 0}
-        // if (this.y > this.gameHeight - 2 * this.height && this.lift < 0) {this.lift +=.1}
-
-        // console.log(this.x)
-        this.x += this.speed
+        //position updating        
+        this.x += this.speed + this.relSpeed
         this.y -= this.lift
+        //sprite cycling
+        if (this.counter > 10)
+        {this.spriteNum++;
+        this.spriteNum = this.spriteNum % 4; this.counter = 0} else {
+            this.counter++
+        }
     }
 
     draw(ctx) {
-        ctx.fillStyle = "white"
-        ctx.fillRect(this.x, this.y, this.width, this.height)
+        if (this.direction === "backward") {
+        ctx.drawImage(this.imageBackward, ...this.sprites[this.spriteNum], this.x, this.y, this.width, this.height)}
+        else if (this.direction ==="forward") {
+            ctx.drawImage(this.imageForward, ...this.sprites[this.spriteNum], this.x, this.y, this.width, this.height)
+        }
+        
     }
 
 }
@@ -206,19 +246,31 @@ function collision (player, object) {
     // else {player.alive = true}
 }
 
-function enemyHandler(context, timer){
-    
-    for (let i = 0; i < enemies.length; i++) {
-        let currentEnemy = enemies[i]
-        currentEnemy.draw(context); collision(player, currentEnemy)
-        if (currentEnemy.gun === true)
-        {currentEnemy.fireControl()}
-        currentEnemy.isRelevant(canvas.width, canvas.height)
-            if (!currentEnemy.relevant) {
-                enemies.splice(enemies.indexOf(currentEnemy), 1)
-            }
-    console.log(player.alive)
+class EnemyHandler{
+    constructor(context, timer){
+        this.context = context
+        this.timer = timer
+    }
+     
+    update(background) {
+        for (let i = 0; i < enemies.length; i++) {
+            let currentEnemy = enemies[i]
+            currentEnemy.relSpeed = background.speed; 
+            debugger
+            if  (currentEnemy.relevant) 
+                {currentEnemy.draw(this.context); collision(player, currentEnemy)}
+            
+            if (currentEnemy.gun === true)
+                {currentEnemy.fireControl()}
 
+            currentEnemy.isRelevant(canvas.width, canvas.height)
+
+            // if (!currentEnemy.relevant) {
+            //     enemies.splice(enemies.indexOf(currentEnemy), 1)
+            //     }
+
+            console.log(player.alive)
+        }
     }
     
 }
@@ -239,9 +291,9 @@ function projectileHandler (context) {
 function gameOver(player) {
     if (!player.alive )
     {const endGame = document.createElement("h1")
-    endGame.textContent = "Game Over}"
+    endGame.textContent = "Game Over"}
 }
-}
+
 
 
 class EnemySpawner {
@@ -260,9 +312,9 @@ class EnemySpawner {
 
 const input = new InputHandler()
 const player = new Player(canvas.width, canvas.height) 
-const background = new Background(0, 0, canvas.width, canvas.height)
+const background = new Background(canvas.width, canvas.height, "game_background")
 // player.draw(ctx)
-
+const baddies = new EnemyHandler(ctx, 500)
 const newEnemy = new Enemy(canvas.width/2 , canvas.height - 50 , 50, 50, 0, 0, true, 1, 100, [-1, 1], [4,4])
 const otherEnemy = new Enemy(canvas.width/1.2, canvas.height - 50, 50, 50, 0, 0, true, 1, 200, [0, 1], [5,5])
 enemies.push(otherEnemy)
@@ -279,11 +331,12 @@ function animate(timeStamp) {
     lastTime = timeStamp
     counter += frameRate
     ctx.clearRect(0,0,canvas.width, canvas.height)
+    background.update(player, ctx)
     player.update(input)
     player.draw(ctx)
-    // newEnemy.draw(ctx)
+    // newEnemy.draw(ctx)dwsdwadw
     projectileHandler(ctx)
-    enemyHandler(ctx)
+    baddies.update(background)
     gameOver(player)
     // console.log(timeStamp)
     if (player.alive ) {requestAnimationFrame(animate)}
