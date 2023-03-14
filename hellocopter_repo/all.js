@@ -2,38 +2,37 @@
 // import Canvas from "./canvas.js" ****modules! refactor
 
 
-let projectiles = []
-let enemies = []
-const canvas = document.getElementById("game_canvas")
-const ctx = canvas.getContext("2d")
-canvas.width = 1000;
-canvas.height = 500;
 // let gunTimer = 0
 
 class Enemy{
-    constructor(x, y, width, height, lift, speed, gun, bullets, timer, gunAngle, bulletSize, image) {
+    constructor(x, y, width, height, lift, speed, gun, timer, gunAngle, bulletSize) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.lift = lift;
         this.speed = speed;
-        // this.relX = 0
-        // this.realX = this.x + this.relX
+        this.collisionPos = 0
         this.relevant = true;
         this.gun = gun
-        this.bullets = bullets
+        // this.bullets = bullets
         this.timer = timer
         this.counter = 0
         this.gunAngle = gunAngle
         this.bulletSize = bulletSize
-        this.image = image
+        this.image = document.getElementById("game_sprites")
         // this.image = document.getElementById(image);d
     }
 
     draw(ctx, offset) {
-        ctx.fillStyle = "red"
-        ctx.fillRect(this.x - offset, this.y, this.width, this.height)
+        this.collisionPos = this.x - offset
+        if (this.gunAngle[0] === 0){
+        ctx.drawImage(this.image, 0, 170, 215, 125, this.x - offset, this.y, this.width, this.height)}
+        else if (this.gunAngle[0] < 0)
+        {ctx.drawImage(this.image, 220, 170, 215, 125, this.x - offset, this.y, this.width, this.height)}
+        
+        // ctx.fillStyle = "red"
+        // ctx.fillRect(this.x - offset, this.y, this.width, this.height)
         // ctx.drawImage(this.image, sx, sy, swidth, sheight, drawx, drawy, width, height)
     }
     
@@ -43,7 +42,7 @@ class Enemy{
              this.y + this.height < 0 || 
              this.y > gameHeight ) {
                 this.relevant = false      
-             }
+             } else {this.relevant = true}
     }
 
     // fire(bulletCount, width, height, speed, lift) {
@@ -53,19 +52,19 @@ class Enemy{
     // }
 
     update(gameWidth, gameHeight) {
-        this.x += this.speed + this.relSpeed
+        this.x += this.speed
         this.y -= this.lift
-        if (this.x < 0 || this.x > gameWidth || this.y > gameHeight || this.y < 0) {
-            this.relevant = false  // don't kick out of queue just don't draw
-        }
+        // if (this.x < 0 + this.collisionPos ) {this.x = gameWidth } 
+        // if (this.x > gameWidth) {this.x = 0 + this.collisionPos}
+        // if (this.y < 0 && this.y > gameHeight) {this.lift = (this.lift * -1)}
     }
 
     fireControl() {
         // let that = this
         if (this.counter > this.timer) {
-            for (let i = 0; i < this.bullets; i++){
-               this.fire()
-            }; this.counter = 0
+            
+              { this.fire()
+             this.counter = 0}
         } else {this.counter++}
 
         // else {gunTimer++; console.log(gunTimer)}
@@ -89,14 +88,14 @@ class Projectile{
         this.height = height
         this.lift = lift
         this.speed = speed
-        this.relX = 0
-        this.realX = this.relX + this.x
+        this.collisionPos = 0
         this.relevant = true
     }
 
     draw(context, offset) {
         context.fillStyle = "yellow"
-        context.fillRect(this.x - offset, this.y, this.width, this.height)
+        this.collisionPos = this.x - offset
+        context.fillRect(this.collisionPos, this.y, this.width, this.height)
         // debugger
     }
 
@@ -117,6 +116,7 @@ class Projectile{
 }
 
 class InputHandler {
+    // debugger
     constructor(){
         this.keys = []
         let input = this
@@ -127,7 +127,7 @@ class InputHandler {
                 e.key === 'd') && !input.keys.includes(e.key)
                 ) {input.keys.push(e.key)}
 
-                console.log(input.keys)
+                // console.log(input.keys)
         })
 
         window.addEventListener('keyup', function (e) {
@@ -137,7 +137,7 @@ class InputHandler {
                 e.key === 'd')
                 ) {input.keys.splice(input.keys.indexOf(e.key), 1)}
 
-                console.log(input.keys)
+                // console.log(input.keys)
 
         })
     }
@@ -185,18 +185,19 @@ class Background {
     
     
 
-    backgroundHandler(){
+    // backgroundHandler(){
 
-    }
+    // }
 
 }
+
 class Player  {
     constructor (gameWidth, gameHeight) {
         this.gameWidth = gameWidth
         this.gameHeight = gameHeight
         this.width = 60
         this.height = 30
-        this.x = 0
+        this.x = 50
         this.y = gameHeight - this.height
         this.relSpeed = 0
         this.speed = 0
@@ -205,18 +206,23 @@ class Player  {
         this.pickup = false
         this.success = false
         this.direction = "forward"
-        this.sprites = [[ 50, 110, 230, 68],
-        [ 50 , 170, 230, 70],
-         [50, 240, 230, 70],
-        [ 50, 310, 230, 68]
+        this.forwardSprites = [[ 0, 80, 230, 80],
+        [ 250 , 80, 230, 80],
+         [500, 80, 230, 80],
+        [725, 80, 230, 80]
+        ]
+        this.backwardSprites = [[ 20, 0, 230, 80],
+        [ 250 , 0, 230, 80],
+         [500, 0, 230, 80],
+        [750, 0, 230, 80]
         ]
         this.spriteNum = 0 
         this.counter = 0
-        this.imageBackward = document.getElementById("game_sprites")
-        this.imageForward = document.getElementById("game_sprites_forward")
+        this.image = document.getElementById("game_sprites")
+        // this.imageForward = document.getElementById("game_sprites_forward")
 }
 
-    update(input) {
+    update(input, context) {
         // speed and lift
             // lift
         if (input.keys.includes('w') && this.lift < 2) {this.lift += .03}
@@ -227,8 +233,11 @@ class Player  {
         if (input.keys.includes('a') && this.speed > -3) {this.speed -= .03; this.direction = "backward"}
         if (input.keys.includes('d') && this.speed < 3) {this.speed += .03; this.direction = "forward"}
         // boundary handling
-        if ((this.x > 3 * this.gameWidth / 4 ) && this.speed > 0) {this.speed -= .04}
-        if ((this.x < this.gameWidth / 4) && this.speed < 0) {this.speed += .04}
+        if ((this.x > this.gameWidth - this.width * 3 ) && this.speed > 0) {this.speed -= this.speed / 30}
+        if ((this.x < this.width * 3) && this.speed < 0) {this.speed += -this.speed/30}
+        if (this.x > this.gameWidth - this.width) {this.speed = -.01; this.x = this.gameWidth - this.width - .01}
+        if (this.x < this.width) {this.speed = .01; this.x = this.width + .01}
+
         if (this.y < this.height && this.lift > 0) {this.lift -=.4}
         if (this.y > this.gameHeight - this.height) {this.lift = 0; this.y = this.gameHeight - this.height; this.speed = 0}
         //position updating        
@@ -240,22 +249,24 @@ class Player  {
         this.spriteNum = this.spriteNum % 4; this.counter = 0} else {
             this.counter++
         }
+        this.draw(context)
     }
 
     draw(ctx) {
         if (this.direction === "backward") {
-        ctx.drawImage(this.imageBackward, ...this.sprites[this.spriteNum], this.x, this.y, this.width, this.height)}
+        ctx.drawImage(this.image, ...this.backwardSprites[this.spriteNum], this.x, this.y, this.width, this.height)}
         else if (this.direction ==="forward") {
-            ctx.drawImage(this.imageForward, ...this.sprites[this.spriteNum], this.x, this.y, this.width, this.height)
+            ctx.drawImage(this.image, ...this.forwardSprites[this.spriteNum], this.x, this.y, this.width, this.height)
         }
         
     }
 
+
 }
 
 function collision (player, object) {
-    if (player.x < object.x + object.width &&
-        player.x + player.width > object.x &&
+    if (player.x < object.collisionPos + object.width &&
+        player.x + player.width > object.collisionPos &&
         player.y < object.y + object.height &&
         player.y + player.height > object.y)
     // if (Math.sqrt(px * px  + py * py)) + (Math.sqrt(ox * ox + oy * oy)) < (Math.sqrt((px - ox) * (px - ox) + (py - oy) * (py - oy)))
@@ -269,27 +280,33 @@ class EnemyHandler{
         this.timer = timer
     }
      
-    update(background) {
+    update(background, player) {
         for (let i = 0; i < enemies.length; i++) {
-            let currentEnemy = enemies[i]
-            // currentEnemy.relX = -background.x; 
-            // debugger
-            if  (currentEnemy.relevant) 
-                {currentEnemy.draw(this.context, background.x); collision(player, currentEnemy)}
+            let currentEnemy = enemies[i];
+            if  (currentEnemy.relevant)
+                {currentEnemy.update(background.width, background.height); 
+                    currentEnemy.draw(this.context, background.x); 
+                    this.collision(player, currentEnemy)
+                    };
             
             if (currentEnemy.gun === true)
-                {currentEnemy.fireControl()}
+                {currentEnemy.fireControl()};
 
             currentEnemy.isRelevant(canvas.width, canvas.height)
 
-            // if (!currentEnemy.relevant) {
-            //     enemies.splice(enemies.indexOf(currentEnemy), 1)
-            //     }
-
-            console.log(player.alive)
+            // console.log(player.alive)
         }
     }
     
+    collision (player, object) {
+        if (player.x < object.collisionPos + object.width &&
+            player.x + player.width > object.collisionPos &&
+            player.y < object.y + object.height &&
+            player.y + player.height > object.y)
+        // if (Math.sqrt(px * px  + py * py)) + (Math.sqrt(ox * ox + oy * oy)) < (Math.sqrt((px - ox) * (px - ox) + (py - oy) * (py - oy)))
+        {player.alive = false} 
+        // else {player.alive = true}
+    }
 }
 
 class ProjectileHandler  {
@@ -297,18 +314,27 @@ class ProjectileHandler  {
         this.context = context
     }
 
-    update (background){
+    update (background, player){
         for (let i = 0; i < projectiles.length; i++) {
-            let currentProjectile = projectiles[i]
-
-            currentProjectile.draw(this.context, background.x)
-            currentProjectile.update()
-            collision(player, currentProjectile)
+            let currentProjectile = projectiles[i];
+            currentProjectile.update();
+            currentProjectile.draw(this.context, background.x);
+            this.collision(player, currentProjectile);
             currentProjectile.isRelevant(canvas.width, canvas.height)
             if (!currentProjectile.relevant) {
                 projectiles.splice(projectiles.indexOf(currentProjectile), 1)
             }
         }
+    }
+
+    collision (player, object) {
+        if (player.x < object.collisionPos + object.width &&
+            player.x + player.width > object.collisionPos &&
+            player.y < object.y + object.height &&
+            player.y + player.height > object.y)
+        // if (Math.sqrt(px * px  + py * py)) + (Math.sqrt(ox * ox + oy * oy)) < (Math.sqrt((px - ox) * (px - ox) + (py - oy) * (py - oy)))
+        {player.alive = false} 
+        // else {player.alive = true}
     }
 
 }
@@ -321,56 +347,129 @@ function gameOver(player) {
 
 
 
-class EnemySpawner {
-    constructor(timer, enemiesList) {
-        this.timer = timer
+// class EnemySpawner {
+//     constructor(timer, enemiesList) {
+//         this.timer = timer
+//         this.counter = 0
+//         this.enemiesList = enemiesList
+//     }
+
+ class Checkpoint {
+    constructor( x, y, width, height, type){
+        // this.context = context
+        this.type = type
+        this.x = x
+        this.y = y
+        this.width = width
+        this.height = height
+        this.image = document.getElementById("game_sprites")
+        this.collisionPos = 0
+        this.sprites = [[655, 200, 150, 130], [820, 200, 150, 130]]
+        this.spriteNum = 0
+        this.timer = 50
         this.counter = 0
-        this.enemiesList = enemiesList
+
     }
 
-    // spawn(){
-    //     if (this.counter > this.timer)
-    //     {}
-    // }
+    update(context, background, player){
+        if (this.counter > this.timer)
+        {this.spriteNum++; this.spriteNum = this.spriteNum % 2; this.counter = 0}
+        else
+        { this.counter++}
+        this.draw(context, background.x)
+            console.log(player.pickup)
+            console.log(player.success)
+    }
 
+    draw(context, offset){
+        this.collisionPos = this.x - offset
+        // context.fillStyle = "red"
+        context.drawImage(this.image, ...this.sprites[this.spriteNum], this.x - offset, this.y, this.width, this.height)
+        // context.drawImage(this.image, sx, sy, swidth, sheight, this.x, this.y, this.width, this.height)
+    }
+
+    
+ }
+
+ class CheckpointHandler {
+        constructor(){
+            
+        }
+
+        update(context, background, player){
+        for (let i = 0; i < checkpoints.length; i++){
+            checkpoints[i].update(context, background, player);
+            this.collision(player, checkpoints[i])
+            // console.log(player.pickup)
+            // console.log(player.success)
+
+        }}
+
+        collision (player, object) {
+            if ((player.x < object.collisionPos + object.width &&
+                player.x + player.width > object.collisionPos &&
+                player.y < object.y + object.height &&
+                player.y + player.height > object.y) ) 
+                    {if (object.type === "destination") {player.pickup = true} 
+                     else if (object.type === "origin" && player.pickup === true)
+                        {player.success = true}
+        }
+ }
 }
 
-const bullets = new ProjectileHandler(ctx)
 const input = new InputHandler()
-const player = new Player(canvas.width, canvas.height) 
-const background = new Background(canvas.width, canvas.height, "game_background")
-const backgroundWidth = background.image.naturalWidth
-// player.draw(ctx)
-const baddies = new EnemyHandler(ctx, 500)
-const newEnemy = new Enemy(canvas.width/2 , canvas.height - 50 , 50, 50, 0, 0, true, 1, 100, [-1, 1], [4,4])
-const otherEnemy = new Enemy(canvas.width/1.2, canvas.height - 50, 50, 50, 0, 0, true, 1, 200, [0, 1], [5,5])
-enemies.push(otherEnemy)
-enemies.push(newEnemy)
 
-// ctx.fillStyle = "green"
-// ctx.fillRect(250, 100, 50, 50)
+
+let checkpoints = []
+let projectiles = []
+let enemies = []
+const backgroundImage = document.getElementById("game_background")
+const canvas = document.getElementById("game_canvas")
+const ctx = canvas.getContext("2d")
+
+canvas.width = (window.innerWidth - 20)
+canvas.height = backgroundImage.naturalHeight
+const background = new Background(canvas.width, canvas.height, "game_background")
+const player = new Player(canvas.width, canvas.height) 
+
+const start = new Checkpoint( 50, canvas.height - 100, 100, 100, "origin")
+const end = new Checkpoint( 2200 , canvas.height - 100, 100, 100, "destination")
+
+
+
+
+const bullets = new ProjectileHandler(ctx)
+ const baddies = new EnemyHandler(ctx, 500)
+ const bases = new CheckpointHandler(ctx, background, player)
+ 
+ const newEnemy = new Enemy(canvas.width/2 , canvas.height - 50 , 50, 50, 0, 0, true, 100, [-1, 1], [4,4])
+ const otherEnemy = new Enemy(canvas.width/1.2, canvas.height - 50, 50, 50, 0, 0, true, 200, [0, 1], [5,5])
+ const skyEnemy = new Enemy(canvas.width/1.2, canvas.height - 50, 50, 50, 0, 0, true, 200, [0, 1], [5,5])
+
+ enemies.push(otherEnemy)
+ enemies.push(newEnemy)
+ checkpoints.push(start, end)
+
+//  const start = new Checkpoint( canvas.width/24, canvas.height - canvas.height/20, canvas.width/ 240, canvas.height/20, "origin")
+//  const end = new Checkpoint( 23 * canvas.width/24, canvas.height - canvas.height/20, canvas.width/ 240, canvas.height/20, "destination")
+//  checkpoints.push(...[start, end])
+ 
 
 let lastTime = 0
 let counter = 0 
 
 function animate(timeStamp) {
-    const frameRate = timeStamp - lastTime
-    lastTime = timeStamp
-    counter += frameRate
+    // const frameRate = timeStamp - lastTime
+    // lastTime = timeStamp
+    // counter += frameRate
     ctx.clearRect(0,0,canvas.width, canvas.height)
-    background.update(player, ctx, backgroundWidth)
-    player.update(input)
-    player.draw(ctx)
-    // newEnemy.draw(ctx)
-    bullets.update(background)
-    baddies.update(background)
+    background.update(player, ctx, background.image.naturalWidth)
+    bases.update(ctx, background, player)
+    player.update(input, ctx)
+    bullets.update(background, player)
+    baddies.update(background, player)
     gameOver(player)
-    // console.log(timeStamp)
-    if (player.alive ) {requestAnimationFrame(animate)}
-    // if (player.alive) {requestAnimationFrame(animate)}
-    //    if (player.alive && counter > 16) {counter = 0; requestAnimationFrame(animate)}
-    //    else {animate(timeStamp)}
-    
+    if (player.alive ) {requestAnimationFrame(animate)}    
 }
 
 animate(0)
