@@ -295,9 +295,9 @@ class Player  {
 
     draw(ctx) {
         if (this.direction === "backward") {
-        ctx.drawImage(this.image, ...this.backwardSprites[this.spriteNum], this.x, this.y, this.width, this.height)}
+        ctx.drawImage(this.image, ...this.backwardSprites[this.spriteNum], this.x - 20, this.y - 10, this.width + 20, this.height + 10)}
         else if (this.direction ==="forward") {
-            ctx.drawImage(this.image, ...this.forwardSprites[this.spriteNum], this.x, this.y, this.width, this.height)
+            ctx.drawImage(this.image, ...this.forwardSprites[this.spriteNum], this.x - 20 , this.y - 10, this.width + 20, this.height + 10)
         }
         
     }
@@ -359,7 +359,7 @@ function collision (player, object) {
     draw(context, offset){
         this.collisionPos = this.x - offset
         // context.fillStyle = "red"
-        context.drawImage(this.image, ...this.sprites[this.spriteNum], this.x - offset, this.y, this.width, this.height)
+        context.drawImage(this.image, ...this.sprites[this.spriteNum], this.x - offset, this.y - this.height / 5, this.width + this.width / 5 , this.height + this.height / 5)
         // context.drawImage(this.image, sx, sy, swidth, sheight, this.x, this.y, this.width, this.height)
     }
 
@@ -420,8 +420,8 @@ canvas.height = backgroundImage.naturalHeight
 const background = new Background(canvas.width, canvas.height, "game_background")
 const player = new Player(canvas.width, canvas.height) 
 
-const start = new Checkpoint( 50, canvas.height - 100, 100, 100, "origin")
-const end = new Checkpoint( 2200 , canvas.height - 100, 100, 100, "destination")
+const start = new Checkpoint( 50, canvas.height - 50, 100, 50, "origin")
+const end = new Checkpoint( 2200 , canvas.height - 50, 100, 50, "destination")
 
 
 
@@ -445,6 +445,18 @@ enemies.push(enemy1, enemy2, enemy3, enemy4, enemy5)
 
 let lastTime = 0
 let counter = 0 
+
+// function firstFrame(){
+//     ctx.clearRect(0,0,canvas.width, canvas.height)
+//     background.update(player, ctx)
+//     bases.update(ctx, background, player)
+//     player.update(input, ctx)
+//     bullets.update(background, player)
+//     baddies.update(background, player)
+//     ctx.fillStyle="grey";
+//     ctx.fillRect(canvas.width/4, 3*canvas.width/4, canvas.height)
+// }
+//  firstFrame()
 
 function animate(timeStamp) {
     // const frameRate = timeStamp - lastTime

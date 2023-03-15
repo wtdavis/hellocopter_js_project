@@ -2,24 +2,93 @@ p, img, canvas, div, h1, h2, h3, body, li, ul {
     
     list-style: none;
     border: none;
-    font-family: none;
-
+    font-family: sans-serif;
+    color: white;
+    /* text-shadow: */
 
 }
 
 h1 {
-    display: flex;
-    justify-content: center;
     color: white;
-    font-weight:400;
-    background:darkgoldenrod;
+    font-weight:900;
+    background-color: lightblue;
+    position: relative;
+    padding: 20px;
+    border-radius: 10px;
 
 }
+
+body {
+    background-color: #6CABFA;
+    display: flex;
+    flex-direction: column;
+}
 body canvas {
-    display:flex;
-    border: 2px solid grey;
+    border: 2px solid #8097D9;
+    /* background: blue; */
 }
 
 img {
     display: none;
+}
+
+
+header {
+    display: flex;
+    justify-content: space-around;
+    align-items:center;
+}
+#author {
+    /* display: inline-block */
+    /* margin-bottom: 20px; */
+}
+
+#links {
+    /* margin-bottom: 30px; */
+    
+}
+
+
+/* ------------------- */
+
+footer {
+    display: flex;
+    justify-content: space-around;
+}
+
+/* ----------------------- */
+
+#backstory {
+    width: 400px;
+    border: 3px solid lightblue;
+    border-radius: 10px;
+    
+    text-align: center;
+}
+
+/* manual */
+
+ul li {
+    margin: 5px;
+    text-align: center;
+}
+
+#manual-header {
+    text-align: center;
+}
+
+#manual {
+    /* float:right; */
+    display:flex;
+    flex-direction: column;
+    border: 3px solid lightblue;
+    border-radius: 10px;
+
+    /* margin: 40px */
+    
+}
+#instructions {
+    text-align: center;
+    margin: auto;
+
 }
