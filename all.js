@@ -392,13 +392,18 @@ function collision (player, object) {
 }
 
 
-const GameOver = false
+let GameOver = false
+let Run = false
 
 function gameOver(player) {
     if (!player.alive)
     {GameOver =  true}
     if (player.success)
     {GameOver = true}
+    if (GameOver === true && player.success === false) 
+        {splash ("Defeat! Press R to Restart"); window.addEventListener('keydown', function (e) {if (e.key === 'r'){ restart()}})}
+        else if (GameOver === true && player.success === true)
+        {splash("Victory! Press R to Restart"); window.addEventListener('keydown', function (e) {if (e.key === 'r'){ restart()}})}
     // {const endGame = document.createElement("h1")
     // endGame.textContent = "Game Over"}
 }
@@ -417,8 +422,8 @@ const ctx = canvas.getContext("2d")
 
 canvas.width = (window.innerWidth - 20)
 canvas.height = backgroundImage.naturalHeight
-const background = new Background(canvas.width, canvas.height, "game_background")
-const player = new Player(canvas.width, canvas.height) 
+let background = new Background(canvas.width, canvas.height, "game_background")
+let player = new Player(canvas.width, canvas.height) 
 
 const start = new Checkpoint( 50, canvas.height - 50, 100, 50, "origin")
 const end = new Checkpoint( 2200 , canvas.height - 50, 100, 50, "destination")
@@ -427,36 +432,73 @@ const end = new Checkpoint( 2200 , canvas.height - 50, 100, 50, "destination")
 
 
 const bullets = new ProjectileHandler(ctx)
- const baddies = new EnemyHandler(ctx, 500)
- const bases = new CheckpointHandler(ctx, background, player)
+const baddies = new EnemyHandler(ctx, 500)
+const bases = new CheckpointHandler(ctx, background, player)
 
- const enemy1 = new Enemy(700 , canvas.height - 50 , 50, 50, 0, 1, true, 100, [-1, 1], [4,4])
- const enemy2 = new Enemy(backgroundImage.naturalWidth / 2, canvas.height - 50, 50, 50, 0, -1, true, 200, [0, 1], [5,5])
- const enemy3 = new Enemy(backgroundImage.naturalWidth - 700, canvas.height - 50, 50, 50, 0, 0, true, 200, [.5, 1], [5,5])
- const enemy4 = new Enemy(backgroundImage.naturalWidth / 7 , canvas.height - 50 , 50, 50, 0, 2, true, 250, [-1.5, .2], [10,10])
- const enemy5 = new Enemy(backgroundImage.naturalWidth / 2 , canvas.height - 50 , 50, 50, 0, 0, true, 400, [0, .5], [10,10])
+let enemy1 = new Enemy(700 , canvas.height - 50 , 50, 50, 0, 1, true, 100, [-1, 1], [4,4])
+let enemy2 = new Enemy(backgroundImage.naturalWidth / 2, canvas.height - 50, 50, 50, 0, -1, true, 200, [0, 1], [5,5])
+let enemy3 = new Enemy(backgroundImage.naturalWidth - 700, canvas.height - 50, 50, 50, 0, 0, true, 200, [.5, 1], [5,5])
+let enemy4 = new Enemy(backgroundImage.naturalWidth / 7 , canvas.height - 50 , 50, 50, 0, 2, true, 250, [-1.5, .2], [10,10])
+let enemy5 = new Enemy(backgroundImage.naturalWidth / 2 , canvas.height - 50 , 50, 50, 0, 0, true, 400, [0, .5], [10,10])
 
 
 //  enemies.push(otherEnemy, newEnemy, lastEnemy)
 enemies.push(enemy1, enemy2, enemy3, enemy4, enemy5)
+checkpoints.push(start, end)
  
- checkpoints.push(start, end)
- 
+function splash (fillText) {
+    // ctx.clearRect(0, 0, canvas.width, canvas.height)
+    ctx.fillStyle="blue";
+    ctx.strokeStyle="grey"
+    ctx.lineWidth="8"
+    ctx.rect(canvas.width / 4, canvas.height / 4, canvas.width / 2,  canvas.height / 2)
+    ctx.fillRect(canvas.width / 4, canvas.height / 4, canvas.width / 2,  canvas.height / 2)
+    ctx.stroke()
+    ctx.fillStyle="white"
+    ctx.font = "30px Arial"
+    ctx.textAlign="center"
+    ctx.fillText(fillText, canvas.width/2, canvas.height/2)
+}
 
-let lastTime = 0
-let counter = 0 
+function restart(){
 
-// function firstFrame(){
-//     ctx.clearRect(0,0,canvas.width, canvas.height)
-//     background.update(player, ctx)
-//     bases.update(ctx, background, player)
-//     player.update(input, ctx)
-//     bullets.update(background, player)
-//     baddies.update(background, player)
-//     ctx.fillStyle="grey";
-//     ctx.fillRect(canvas.width/4, 3*canvas.width/4, canvas.height)
-// }
-//  firstFrame()
+    projectiles = []
+    enemies = []
+    // checkpoints = []
+    enemy1 = new Enemy(700 , canvas.height - 50 , 50, 50, 0, 1, true, 100, [-1, 1], [4,4])
+    enemy2 = new Enemy(backgroundImage.naturalWidth / 2, canvas.height - 50, 50, 50, 0, -1, true, 200, [0, 1], [5,5])
+    enemy3 = new Enemy(backgroundImage.naturalWidth - 700, canvas.height - 50, 50, 50, 0, 0, true, 200, [.5, 1], [5,5])
+    enemy4 = new Enemy(backgroundImage.naturalWidth / 7 , canvas.height - 50 , 50, 50, 0, 2, true, 250, [-1.5, .2], [10,10])
+    enemy5 = new Enemy(backgroundImage.naturalWidth / 2 , canvas.height - 50 , 50, 50, 0, 0, true, 400, [0, .5], [10,10])
+    enemies.push(enemy1, enemy2, enemy3, enemy4, enemy5)
+    // checkpoints.push(start, end)
+    background = new Background(canvas.width, canvas.height, "game_background")
+    player = new Player(canvas.width, canvas.height)
+    GameOver = false
+    Run = false
+    firstFrame()
+}
+
+function firstFrame(){
+    ctx.clearRect(0,0,canvas.width, canvas.height)
+    background.update(player, ctx)
+    bases.update(ctx, background, player)
+    player.update(input, ctx)
+    bullets.update(background, player)
+    baddies.update(background, player)
+    splash("Press Space to Begin")
+    window.addEventListener('keydown', function (e) {
+        if (e.key === ' ')
+        {if (Run === false){
+            Run = true; animate(0)
+        }}
+        console.log(e)
+    })
+    window.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape')
+        {Run = false}
+    })
+}
 
 function animate(timeStamp) {
     // const frameRate = timeStamp - lastTime
@@ -469,8 +511,13 @@ function animate(timeStamp) {
     bullets.update(background, player)
     baddies.update(background, player)
     gameOver(player)
-     if (GameOver === false)
+    
+    if (GameOver === false && Run === true)
     { requestAnimationFrame(animate)  } 
 }
 
-animate(0)
+firstFrame()
+// splash("Press Space to Begin")
+// animate()
+// animate()
+
