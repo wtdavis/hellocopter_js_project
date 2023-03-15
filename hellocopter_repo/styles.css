@@ -1,4 +1,22 @@
-canvas {
+p, img, canvas, div, h1, h2, h3, body, li, ul {
+    
+    list-style: none;
+    border: none;
+    font-family: none;
+
+
+}
+
+h1 {
+    display: flex;
+    justify-content: center;
+    color: white;
+    font-weight:400;
+    background:darkgoldenrod;
+
+}
+body canvas {
+    display:flex;
     border: 2px solid grey;
 }
 
