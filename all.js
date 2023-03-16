@@ -1,7 +1,7 @@
 
 // import Canvas from "./canvas.js" ****modules! refactor
 
-
+document.addEventListener("DOMContentLoaded", function () {
 
 
 class Enemy{
@@ -190,12 +190,11 @@ class InputHandler {
 }
 
 class Background {
-    constructor(gameWidth, gameHeight, image){      //x === 0-2400
+    constructor(gameWidth, gameHeight, image){      //canvas.width, canvas.height
         this.x = 0
         this.y = 0
         this.gameWidth = gameWidth
         this.width = this.x + this.gameWidth 
-        // this.naturalWidth = naturalWidth
         this.gameHeight = gameHeight
         this.image = document.getElementById(image)
         this.naturalWidth = this.image.naturalWidth
@@ -205,17 +204,21 @@ class Background {
     
     update(player, context) {
         // right side soft boundary 
-        if (player.x > 3 * this.gameWidth / 4 && this.speed < 2 && this.width < this.naturalWidth) {this.speed += .03} 
+        if (player.x > 3 * this.gameWidth / 4 && this.speed < 1.5 && this.width < this.naturalWidth) {this.speed += .03} 
             else if (player.x < 3 * this.gameWidth / 4 && this.speed > 0) 
                 {this.speed -= .03}
         // left side soft boundary
-        if (player.x < this.gameWidth / 4 && this.speed > -2 && this.x > 0) {this.speed -= .03} 
+        if (player.x < this.gameWidth / 4 && this.speed > -1.5 && this.x > 0) {this.speed -= .03} 
             else if (player.x > this.gameWidth / 4 && this.speed < 0 ) 
                 {this.speed += .03}
+        if (this.speed > 0 && player.speed > this.speed / 3) {player.speed -= this.speed * .1}
+        if (this.speed < 0 && player.speed < this.speed / 3) {player.speed -= this.speed * .1}
+                // player.speed -= .08
+                // player.speed += .08
         // right hard boundary
-        if (this.x + this.gameWidth > this.naturalWidth) {this.x = this.naturalWidth - this.gameWidth - .01}
+        if (this.x + this.gameWidth > this.naturalWidth) {this.x = this.naturalWidth - this.gameWidth - .01; this.speed = 0}
                 // left hard boundary
-        if (this.x < 0) {this.x = .01}
+        if (this.x < 0) {this.x = .01; this.speed = 0}
 
         this.x += this.speed
         this.draw(context)
@@ -227,9 +230,7 @@ class Background {
     
     
 
-    // backgroundHandler(){
-
-    // }
+    
 
 }
 
@@ -521,3 +522,4 @@ firstFrame()
 // animate()
 // animate()
 
+})

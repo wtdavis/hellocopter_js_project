@@ -30,25 +30,16 @@ This project will use Canvas to render the game in a browser window, Javascript 
 
 Implementation Timeline
 
-Friday: familiarize with canvas, assemble assets\
-Saturday: implemenet basic game canvas, player movement, collision detection\
-Sunday: create sprite animations, build map, create win/loss logic\
-Monday: create enemy logic, projectile behavior, projectile collisions\
-Tuesday: polish, bug fixes, landing page styling\
-Wednesday: flex-time, reach goals if project on pace\
-Thursday Morning: upload, final test flight\
+Friday: Learned canvas basic methods and workflow. Discovered some of the quirks of animating based on screen refresh rate.\
+Saturday: Recreated physics and input handling due to bugs. Learned basic GIMP tools for creating and modifying art assets.\
+Sunday: Discovered the stacked nature of my challenges- player, background, canvas, enemies, and projectiles all had distinct movement characteristics. Sorted out how to track the relative motion of all objects.\
+Monday: Flushed out enemy and projectile characteristics, allowing fine-tuning for enemy movement and firing patterns, projectile size and speed.\
+Tuesday: Polished, added more sprites, tweaked enemy and projectile handlers, tweaked physics. Fixed bugs around canvas-edge soft and hard boundaries.\
+Wednesday: Styled landing page, created splash screen for start/win/loss/restart conditions.\
+Thursday Morning: Uploaded and polished styling, last minute bug fixes.\
 
 ### project progress checklist
 
-☐ Includes links to your portfolio website, Github, and LinkedIn.
-
-☐ Landing page/modal with obvious, clear instructions.
-
-☐ Interactivity of some kind.
-
-☐ Well styled, clean frontend.
-
-☐ If it has music, the option to mute or stop it.
 
 Production README
 ☐ Link to live version.
