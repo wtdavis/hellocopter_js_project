@@ -1,7 +1,7 @@
 
 // import Canvas from "./canvas.js" ****modules! refactor
 
-document.addEventListener("DOMContentLoaded", function () {
+window.addEventListener("DOMContentLoaded", function () {
 
 
 class Enemy{
