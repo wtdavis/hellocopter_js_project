@@ -76,17 +76,15 @@ class EnemyHandler{
     update(background, player) {
         for (let i = 0; i < enemies.length; i++) {
             let currentEnemy = enemies[i];
-            console.log(currentEnemy.x)
-            // if  (currentEnemy.relevant){
                 currentEnemy.update(background.naturalWidth, background.height); 
                     currentEnemy.draw(this.context, background.x); 
                     this.collision(player, currentEnemy)
-                    // };
+
             
             if (currentEnemy.gun === true)
                 {currentEnemy.fireControl()};
 
-            // currentEnemy.isRelevant(canvas.width, canvas.height)
+            
 
             
         }
@@ -204,21 +202,27 @@ class Background {
     
     update(player, context) {
         // right side soft boundary 
-        if (player.x > 3 * this.gameWidth / 4 && this.speed < 1.5 && this.width < this.naturalWidth) {this.speed += .03} 
+        if (player.x > 3 * this.gameWidth / 4 && this.speed < 1.5 &&
+            this.width < this.naturalWidth) 
+                {this.speed += .03} 
             else if (player.x < 3 * this.gameWidth / 4 && this.speed > 0) 
                 {this.speed -= .03}
         // left side soft boundary
-        if (player.x < this.gameWidth / 4 && this.speed > -1.5 && this.x > 0) {this.speed -= .03} 
+        if (player.x < this.gameWidth / 4 && this.speed > -1.5 && this.x > 0)
+                {this.speed -= .03} 
             else if (player.x > this.gameWidth / 4 && this.speed < 0 ) 
                 {this.speed += .03}
-        if (this.speed > 0 && player.speed > this.speed / 3) {player.speed -= this.speed * .1}
-        if (this.speed < 0 && player.speed < this.speed / 3) {player.speed -= this.speed * .1}
-                // player.speed -= .08
-                // player.speed += .08
-        // right hard boundary
-        if (this.x + this.gameWidth > this.naturalWidth) {this.x = this.naturalWidth - this.gameWidth - .01; this.speed = 0}
-                // left hard boundary
-        if (this.x < 0) {this.x = .01; this.speed = 0}
+        //player-background inverse speed relationship
+        if (this.speed > 0 && player.speed > this.speed / 3)
+            {player.speed -= this.speed * .1}
+        if (this.speed < 0 && player.speed < this.speed / 3) 
+            {player.speed -= this.speed * .1}
+        // right side hard boundary
+        if (this.x + this.gameWidth > this.naturalWidth) 
+            {this.x = this.naturalWidth - this.gameWidth - .01; this.speed = 0}
+        // left side hard boundary
+        if (this.x < 0) 
+            {this.x = .01; this.speed = 0}
 
         this.x += this.speed
         this.draw(context)
@@ -493,7 +497,6 @@ function firstFrame(){
         {if (Run === false){
             Run = true; animate(0)
         }}
-        console.log(e)
     })
     window.addEventListener('keydown', function (e) {
         if (e.key === 'Escape')
