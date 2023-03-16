@@ -4,6 +4,8 @@ This project will allow me to develop my skills with vanilla JavaScript and the 
 
 In Hellocopter, the player will assume the role of a helicopter pilot. The objective will be to rescue a capybara from hostile territory, avoiding projectiles from static defenses as well as enemy jets and helicopters. Most of the elements will be in the background, but some foreground elements, such as power lines and bridges, will damage the Hellocopter unless they are avoided in flight. The Hellocopter pilot must travel to a point on the opposite side of the map from the spawn location, land to pick up the capybara, and then traverse the map in the opposite direction, landing again at the spawn location. Successful traversal of the map will trigger a Victory screen.
 
+
+[Live Link] (https://wtdavis.github.io/hellocopter_js_project/)
 ## Functionality & MVPs
 
 
