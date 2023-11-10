@@ -4,6 +4,7 @@ p, img, canvas, div, h1, h2, h3, body, li, ul {
     border: none;
     font-family: sans-serif;
     color: white;
+    /* color: black */
     /* text-shadow: */
 
 }
@@ -112,5 +113,21 @@ ul li {
     padding-right: 20px;
     /* left: 30px; */
     /* background-color: blue; */
+
+}
+
+.gameModal {
+    position: absolute;
+    display: flex;
+    background-color: var(--lightgrey);
+    border: 2px solid purple;
+    color: black;
+}
+
+.main {
+    --darkblue:  rgb(1, 1, 150);
+    --midblue: rgb(27, 61, 136);
+    --lightblue: rgb(122, 170, 241);
+    --lightgrey: rgb(181, 237, 247);  
 
 }

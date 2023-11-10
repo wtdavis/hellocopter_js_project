@@ -3,7 +3,6 @@
 
 window.addEventListener("DOMContentLoaded", function () {
 
-
 class Enemy{
     constructor(x, y, width, height, lift, speed, gun, timer, gunAngle, bulletSize) {
         this.x = x;
@@ -495,7 +494,7 @@ function firstFrame(){
     window.addEventListener('keydown', function (e) {
         if (e.key === ' ')
         {if (Run === false){
-            Run = true; animate(0)
+            Run = true; this.requestAnimationFrame(animate)
         }}
     })
     window.addEventListener('keydown', function (e) {
@@ -504,7 +503,26 @@ function firstFrame(){
     })
 }
 
-function animate(timeStamp) {
+function timer (timeStamp) {
+    
+}
+
+let startTime 
+
+function animate(lastTime, wait) {
+
+    // if (!startTime) {
+    //     startTime = Date.now()
+    // }
+
+
+    console.log(lastTime )
+
+    if (wait < 17) {
+        console.log(wait)
+        requestAnimationFrame(t => animate(lastTime, t-lastTime))
+    }
+    debugger
     // const frameRate = timeStamp - lastTime
     // lastTime = timeStamp
     // counter += frameRate
@@ -514,10 +532,12 @@ function animate(timeStamp) {
     player.update(input, ctx)
     bullets.update(background, player)
     baddies.update(background, player)
-    gameOver(player)
+    gameOver(player)    
     
     if (GameOver === false && Run === true)
-    { requestAnimationFrame(animate)  } 
+    {
+            requestAnimationFrame(t => animate(t, t-lastTime))  
+        }
 }
 
 firstFrame()
