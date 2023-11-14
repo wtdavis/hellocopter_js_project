@@ -6,11 +6,9 @@ export class Background {
         this.game = game      
         this.x = 0
         this.y = 0
-        this.
-        this.
-        this.gameWidth = game.canvasWidth
-        this.width = this.x + game.canvasWidth
-        this.gameHeight = game.canvasHeight
+        this.gameWidth = this.game.canvasWidth
+        this.width = this.x + this.game.canvasWidth
+        this.gameHeight = this.game.canvasHeight
         this.image = document.getElementById(image)
         this.naturalWidth = this.image.naturalWidth
         this.speed = 0
@@ -20,15 +18,15 @@ export class Background {
     update() {
         let player = this.game.playerXOffset
         // right side soft boundary 
-        if (player.x > 3 * this.gameWidth / 4 && this.speed < 1.5 &&
+        if (player > 3 * this.gameWidth / 4 && this.speed < 1.5 &&
             this.width < this.naturalWidth) 
                 {this.speed += .03} 
-            else if (player.x < 3 * this.gameWidth / 4 && this.speed > 0) 
+            else if (player < 3 * this.gameWidth / 4 && this.speed > 0) 
                 {this.speed -= .03}
         // left side soft boundary
-        if (player.x < this.gameWidth / 4 && this.speed > -1.5 && this.x > 0)
+        if (player < this.gameWidth / 4 && this.speed > -1.5 && this.x > 0)
                 {this.speed -= .03} 
-            else if (player.x > this.gameWidth / 4 && this.speed < 0 ) 
+            else if (player > this.gameWidth / 4 && this.speed < 0 ) 
                 {this.speed += .03}
         //player-background inverse speed relationship
         if (this.speed > 0 && player.speed > this.speed / 3)

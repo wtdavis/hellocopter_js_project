@@ -506,8 +506,6 @@ function gameOver(player) {
 
 
 
-const input = new InputHandler()
-
 
 let checkpoints = []
 let projectiles = []
@@ -526,10 +524,12 @@ const end = new Checkpoint( 2200 , canvas.height - 50, 100, 50, "destination")
 
 
 
+let game = new Game(canvas.width, canvas.height)
 
-let player = new Player(canvas.width, canvas.height) 
-let background = new Background(canvas.width, canvas.height, "game_background")
-const bullets = new ProjectileHandler(ctx)
+const input = new InputHandler(game)
+let player = new Player(game) 
+let background = new Background(canvas.width, canvas.height, "game_background", game)
+const bullets = new ProjectileHandler(game)
 const baddies = new EnemyHandler(ctx, 500, bullets)
 const bases = new CheckpointHandler(ctx, background, player)
 
@@ -544,7 +544,6 @@ let enemy5 = new Enemy(backgroundImage.naturalWidth / 2 , canvas.height - 50 , 5
 baddies.enemiesArrayAdd(bullets, enemy1, enemy2, enemy3, enemy4, enemy5)
 
 checkpoints.push(start, end)
-debugger
  
 function splash (fillText) {
     // ctx.clearRect(0, 0, canvas.width, canvas.height)

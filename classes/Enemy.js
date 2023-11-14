@@ -65,24 +65,24 @@ export class Enemy{
 }
 
 export class EnemyHandler{
-    constructor(context, ProjectileHandler){
+    constructor(game){
+        this.game = game
         this.enemies = []
         this.context = context
         
     }
         
-    enemiesArrayAdd (...enemies) {
-        this.enemies = this.enemies.concat(...enemies)
-        debugger
-    }
 
 
-    update(background, player) {
+
+
+    update() {
         debugger
-        for (let i = 0; i < this.enemies.length; i++) {
-            let currentEnemy = this.enemies[i];
-                currentEnemy.update(background.naturalWidth, background.height); 
-                    currentEnemy.draw(this.context, background.x); 
+        let enemies = this.game.enemies
+        for (let i = 0; i < enemies.length; i++) {
+            let currentEnemy = enemies[i];
+                currentEnemy.update(this.game.levelDimensions.naturalWidth, this.game.levelDimensions.height); 
+                    currentEnemy.draw(this.game.ctx, background.x); 
                     this.collision(player, currentEnemy)
 
             

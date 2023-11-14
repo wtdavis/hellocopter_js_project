@@ -1,7 +1,7 @@
 export class Game {
-    constructor(gameDimensions) {
-        this.canvasWidth = gameDimensions[0]
-        this.canvasHeight = gameDimensions[1]
+    constructor(canvasWidth, canvasHeight) {
+        this.canvasWidth = canvasWidth
+        this.canvasHeight = canvasHeight
         this.input = [];
         this.backgroundXOffset;
         this.playerXOffset;
@@ -13,7 +13,8 @@ export class Game {
         this.checkPointHandler;
         this.player;
         this.canvas = document.getElementById("game_canvas")
-        this.ctx = canvas.getContext("2d")
+        this.ctx = this.canvas.getContext("2d")
+        this.levelDimensions = document.getElementById("game_background")
         }
 
         setBackgroundXOffset (num) {
@@ -40,4 +41,7 @@ export class Game {
             this.enemies = this.enemies.slice(this.enemies.indexOf(enemy), 1)
         }
 
+        setInput(input) {
+            this.input = input
+        }
     } 

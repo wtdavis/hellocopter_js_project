@@ -2,15 +2,15 @@ import { GameOver, Run, checkpoints, projectiles, enemies, gameOver } from "../u
 
 
 class Player  {
-    constructor (gameWidth, gameHeight, game) {
+    constructor (game) {
         this.game = game
         this.ctx = game.ctx
-        this.gameWidth = gameWidth
-        this.gameHeight = gameHeight
+        this.gameWidth = game.canvasWidth
+        this.gameHeight = game.canvasHeight
         this.width = 60
         this.height = 30
-        this.x = 50
-        this.y = gameHeight - this.height
+        this.x = game.playerXOffset
+        this.y = this.gameHeight - this.height
         this.relSpeed = 0
         this.speed = 0
         this.lift = 0
@@ -32,25 +32,22 @@ class Player  {
         this.counter = 0
         this.image = document.getElementById("game_sprites")
 }
-
-    update( context) {
+    update() {
         let input = this.game.input
-        if (input.keys.includes('w') && this.lift < 2) {this.lift += .03}
-        if (!input.keys.includes('w') && this.lift > 0) {this.lift -= .03}
-        if (input.keys.includes('s') && this.lift > -2) {this.lift -= .02}
-        if (!input.keys.includes('s') && this.lift < 0) {this.lift += .03}
+        if (input.includes('w') && this.lift < 2) {this.lift += .03}
+        if (!input.includes('w') && this.lift > 0) {this.lift -= .03}
+        if (input.includes('s') && this.lift > -2) {this.lift -= .02}
+        if (!input.includes('s') && this.lift < 0) {this.lift += .03}
             // speed
-        if (input.keys.includes('a') && this.speed > -3) {this.speed -= .03; this.direction = "backward"}
-        if (input.keys.includes('d') && this.speed < 3) {this.speed += .03; this.direction = "forward"}
-        // boundary handling
+        if (input.includes('a') && this.speed > -3) {this.speed -= .03; this.direction = "backward"}
+        if (input.includes('d') && this.speed < 3) {this.speed += .03; this.direction = "forward"}
+
+        //boundary handling
         if ((this.x > this.gameWidth - this.width * 3 ) && this.speed > 0) {this.speed -= this.speed / 30}
         if ((this.x < this.width * 3) && this.speed < 0) {this.speed += -this.speed/30}
         if (this.x > this.gameWidth - this.width) {this.speed = -.01; this.x = this.gameWidth - this.width - .01}
         if (this.x < this.width) {this.speed = .01; this.x = this.width + .01}
 
-        if (this.y < this.height && this.lift > 0) {this.lift -=.4}
-        if (this.y > this.gameHeight - this.height) {this.lift = 0; this.y = this.gameHeight - this.height; this.speed = 0}
-        //position updating        
         this.x += this.speed + this.relSpeed
         this.y -= this.lift
         //sprite cycling
@@ -59,8 +56,38 @@ class Player  {
         this.spriteNum = this.spriteNum % 4; this.counter = 0} else {
             this.counter++
         }
-        this.draw(context)
+        this.draw()
     }
+
+
+    // update() {
+    //     let input = this.game.input
+    //     if (input.keys.includes('w') && this.lift < 2) {this.lift += .03}
+    //     if (!input.keys.includes('w') && this.lift > 0) {this.lift -= .03}
+    //     if (input.keys.includes('s') && this.lift > -2) {this.lift -= .02}
+    //     if (!input.keys.includes('s') && this.lift < 0) {this.lift += .03}
+    //         // speed
+    //     if (input.keys.includes('a') && this.speed > -3) {this.speed -= .03; this.direction = "backward"}
+    //     if (input.keys.includes('d') && this.speed < 3) {this.speed += .03; this.direction = "forward"}
+    //     // boundary handling
+    //     if ((this.x > this.gameWidth - this.width * 3 ) && this.speed > 0) {this.speed -= this.speed / 30}
+    //     if ((this.x < this.width * 3) && this.speed < 0) {this.speed += -this.speed/30}
+    //     if (this.x > this.gameWidth - this.width) {this.speed = -.01; this.x = this.gameWidth - this.width - .01}
+    //     if (this.x < this.width) {this.speed = .01; this.x = this.width + .01}
+
+    //     if (this.y < this.height && this.lift > 0) {this.lift -=.4}
+    //     if (this.y > this.gameHeight - this.height) {this.lift = 0; this.y = this.gameHeight - this.height; this.speed = 0}
+    //     //position updating        
+    //     this.x += this.speed + this.relSpeed
+    //     this.y -= this.lift
+    //     //sprite cycling
+    //     if (this.counter > 10)
+    //     {this.spriteNum++;
+    //     this.spriteNum = this.spriteNum % 4; this.counter = 0} else {
+    //         this.counter++
+    //     }
+    //     this.draw()
+    // }
 
     draw() {
         

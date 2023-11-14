@@ -1,6 +1,7 @@
 export class InputHandler {
     
-    constructor(){
+    constructor(game){
+        this.game = game
         this.keys = []
         let input = this
         window.addEventListener('keydown', function(e){
@@ -8,7 +9,7 @@ export class InputHandler {
                 e.key === 's' ||
                 e.key === 'a' ||
                 e.key === 'd') && !input.keys.includes(e.key)
-                ) {input.keys.push(e.key)}     
+                ) {this.game.setInput(keys.push(e.key))}     
         })
 
         window.addEventListener('keyup', function (e) {
@@ -16,7 +17,7 @@ export class InputHandler {
                 e.key === 's' ||
                 e.key === 'a' ||
                 e.key === 'd')
-                ) {input.keys.splice(input.keys.indexOf(e.key), 1)}
+                ) {this.game.setInput(this.keys.splice(this.keys.indexOf(e.key), 1))}
         })
     }
 }
