@@ -2,7 +2,7 @@ import { GameOver, Run, checkpoints, projectiles, enemies, gameOver } from "../u
 import { ProjectileHandler } from "./Projectile.js";
 
 export class Enemy{
-    constructor(x, y, width, height, lift, speed, gun, timer, gunAngle, bulletSize) {
+    constructor(log, x, y, width, height, lift, speed, gun, timer, gunAngle, bulletSize) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -18,6 +18,7 @@ export class Enemy{
         this.gunAngle = gunAngle
         this.bulletSize = bulletSize
         this.image = document.getElementById("game_sprites")
+        
     }
 
     draw(ctx, offset) {
@@ -62,13 +63,17 @@ export class Enemy{
             this.gunAngle[0], this.gunAngle[1]))
             }
 
+    log(log) {
+        return log
+
+    }
 }
 
 export class EnemyHandler{
     constructor(game){
         this.game = game
         this.enemies = []
-        this.context = context
+        this.ctx = game.ctx
         
     }
         
@@ -77,12 +82,11 @@ export class EnemyHandler{
 
 
     update() {
-        debugger
         let enemies = this.game.enemies
         for (let i = 0; i < enemies.length; i++) {
             let currentEnemy = enemies[i];
-                currentEnemy.update(this.game.levelDimensions.naturalWidth, this.game.levelDimensions.height); 
-                    currentEnemy.draw(this.game.ctx, background.x); 
+                currentEnemy.update(backgroun.naturalWidth, backgroun.height); 
+                    currentEnemy.draw(this.ctx, background); 
                     this.collision(player, currentEnemy)
 
             

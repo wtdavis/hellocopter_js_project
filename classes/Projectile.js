@@ -38,29 +38,30 @@ export class Projectile{
 export class ProjectileHandler  {
     constructor(game) {
         this.game = game
-        this.context = game.context
+        this.ctx = game.ctx
     }
 
     
 
     update (){
-        for (let i = 0; i < this.game.projectiles.length; i++) {
-            let currentProjectile = this.game.projectiles[i];
+        let projectiles = this.game.projectiles
+        for (let i = 0; i < projectiles.length; i++) {
+            let currentProjectile = projectiles[i];
             currentProjectile.update();
-            currentProjectile.draw(this.context, background.x);
-            this.collision(player, currentProjectile);
-            currentProjectile.isRelevant(background.naturalWidth, background.naturalHeight)
+            currentProjectile.draw(this.ctx, this.game.backgroundXOffset);
+            this.collision(this.game.player, currentProjectile);
+            currentProjectile.isRelevant(this.game.canvasWidth, this.game.canvasHeight)
             if (!currentProjectile.relevant) {
-                this.game.removeProjectile(pcurrentProjectile)
+                this.game.removeProjectile(currentProjectile)
             }
         }
     }
 
-    collision (player, object) {
-        if (player.x < object.collisionPos + object.width &&
-            player.x + player.width > object.collisionPos &&
-            player.y < object.y + object.height &&
-            player.y + player.height > object.y)
+    collision (player, projectile) {
+        if (player.playerXYOffset[0] < projectile.collisionPos + projectile.width &&
+            player.playerXYOffset[0] + player.width > projectile.collisionPos &&
+            player.playerXYOffset[1] < projectile.y + projectile.height &&
+            player.playerXYOffset[1] + player.height > projectile.y)
         // if (Math.sqrt(px * px  + py * py)) + (Math.sqrt(ox * ox + oy * oy)) < (Math.sqrt((px - ox) * (px - ox) + (py - oy) * (py - oy)))
         {player.alive = false} 
         // else {player.alive = true}
