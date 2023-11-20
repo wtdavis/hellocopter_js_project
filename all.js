@@ -30,7 +30,6 @@ class GameLoop {
         
         const backgroundImage = document.getElementById("game_background")
         this.gameDimensions = [(window.innerWidth - 20), backgroundImage.naturalHeight]
-
         // create new game, then add is as arg to each instance of other classes.
         // game instance contains necessary common variables
 

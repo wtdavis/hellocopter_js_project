@@ -56,6 +56,7 @@ class Player  {
         this.spriteNum = this.spriteNum % 4; this.counter = 0} else {
             this.counter++
         }
+        this.game.setPlayerXYOffset([this.x, this.y])
         this.draw()
     }
 
