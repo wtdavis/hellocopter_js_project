@@ -59,7 +59,7 @@ class GameLoop {
         this.checkPointHandler.update()
         this.player.update()
         
-        requestAnimationFrame(e => {this.draw(); console.log(e)})
+        requestAnimationFrame(e => {this.draw()})
     }
 
     step () {
@@ -196,12 +196,12 @@ function step (timeStamp, prevTimeStamp) {
     let p = prevTimeStamp || timeStamp
     let t = timeStamp
     elapsedTime = performance.now()
-    console.log(elapsedTime) 
+    // console.log(elapsedTime) 
     if (GameOver === false && Run === true && t - p >= 16) {
         requestAnimationFrame(mark => animate(mark, t))
     } 
     else if (t-p < 16) {
-        console.log(t-p)
+        // console.log(t-p)
         setTimeout(() => {animate(elapsedTime, p)}, 1)
     } else {
         // console.log("gameover")

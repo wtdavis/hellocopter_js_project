@@ -2,7 +2,7 @@ import { GameOver, Run, checkpoints, projectiles, enemies, gameOver } from "../u
 import { ProjectileHandler } from "./Projectile.js";
 
 export class Enemy{
-    constructor(log, x, y, width, height, lift, speed, gun, timer, gunAngle, bulletSize) {
+    constructor(x, y, width, height, lift, speed, gun, timer, gunAngle, bulletSize) {
         this.x = x;
         this.y = y;
         this.width = width;
@@ -63,10 +63,7 @@ export class Enemy{
             this.gunAngle[0], this.gunAngle[1]))
             }
 
-    log(log) {
-        return log
-
-    }
+    
 }
 
 export class EnemyHandler{
@@ -85,7 +82,7 @@ export class EnemyHandler{
         let enemies = this.game.enemies
         for (let i = 0; i < enemies.length; i++) {
             let currentEnemy = enemies[i];
-                currentEnemy.update(backgroun.naturalWidth, backgroun.height); 
+                currentEnemy.update(background.naturalWidth, background.height); 
                     currentEnemy.draw(this.ctx, background); 
                     this.collision(player, currentEnemy)
 

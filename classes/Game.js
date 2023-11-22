@@ -5,7 +5,10 @@ export class Game {
         this.canvasHeight = gameDimensions[1]
         this.input = [];
         this.backgroundXOffset = 0
+        this.backgroundDX
+        this.backgroundDXStore
         this.playerXYOffset = [0, 0]
+        this.playerXYVelocityStore = [0, 0]
         this.playerXYVelocity = [0, 0]
         this.projectiles = [];
         this.enemies = [];
@@ -23,10 +26,19 @@ export class Game {
             return this.backgroundXOffset
         }
 
-        setBackgroundXOffset (num) {
+        setBackgroundXOffset (num, absolute=false) {
+            // console.log(this.backgroundXOffset)
             // if (this.backgroundXOffset >= 0 && this.backgroundXOffset <= this.backgroundDimensions.width - this.canvasWidth) {
             // }
-            this.backgroundXOffset = this.backgroundXOffset + num
+            if (absolute) {
+                this.backgroundXOffset = num
+            } else {
+                this.backgroundXOffset = this.backgroundXOffset + num
+            }
+
+            this.backgroundDX = this.backgroundDXStore - this.backgroundXOffset
+            this.backgroundDXStore = this.backgroundXOffset
+            // console.log(this.backgroundDX)
         }
 
         getPlayerXYOffset() {
@@ -35,8 +47,28 @@ export class Game {
         }
 
         setPlayerXYOffset (numxy) {
-            this.playerXYOffset = numxy
+
+            debugger 
+            this.playerXYVelocityStore ||= this.playerXYOffset
+            // if nothing stored, initializez playerXYVelocityStore, which stores
+            // a position snapshot to compare current position to, to derive velocity
+
+            this.playerXYOffset = [this.playerXYOffset[0] + numxy[0], this.playerXYOffset[1] + numxy[1]]
+            // adjust playerXYOffset, moving player across canvas based on arg numxy
+
+
+            console.log(this.playerXYVelocityStore)
+            debugger 
+
+            let playerVelocityX = this.playerXYVelocityStore[0] - this.playerXYOffset[0]
+            let playerVelocityY = this.playerXYVelocityStore[1] - this.playerXYOffset[1]
+
+            this.playerXYVelocity = [playerVelocityX, playerVelocityY]
+            this.playerXYVelocityStore[0] -= this.playerXYOffset[0] 
+            this.playerXYVelocityStore[1] -= this.playerXYOffset[1] 
+            console.log(this.playerXYVelocity)
         }
+
 
 
         addProjectile (projectile) {
