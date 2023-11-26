@@ -63,7 +63,7 @@ class Player  {
 
 
     draw() {
-        
+        debugger
         if (this.direction === "backward") {
         this.ctx.drawImage(this.image, ...this.backwardSprites[this.spriteNum], this.x - 20, this.y - 10, this.width + 20, this.height + 10)}
         else if (this.direction ==="forward") {

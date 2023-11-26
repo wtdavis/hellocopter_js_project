@@ -18,7 +18,6 @@ export class Enemy{
         this.gunAngle = gunAngle
         this.bulletSize = bulletSize
         this.image = document.getElementById("game_sprites")
-        
     }
 
     draw(ctx, offset) {
@@ -83,7 +82,7 @@ export class EnemyHandler{
         for (let i = 0; i < enemies.length; i++) {
             let currentEnemy = enemies[i];
                 currentEnemy.update(background.naturalWidth, background.height); 
-                    currentEnemy.draw(this.ctx, background); 
+                    currentEnemy.draw(this.ctx, backgroun); 
                     this.collision(player, currentEnemy)
 
             
