@@ -48,7 +48,7 @@ class Player  {
         if (this.x > this.gameWidth - this.width) {this.speed = -.01; this.x = this.gameWidth - this.width - .01}
         if (this.x < this.width) {this.speed = .01; this.x = this.width + .01}
 
-        this.x += this.speed + this.relSpeed
+        this.x += this.speed + this.game.backgroundDX
         this.y -= this.lift
         //sprite cycling
         if (this.counter > 10)
@@ -60,14 +60,18 @@ class Player  {
         this.draw()
     }
 
-
+    
 
     draw() {
-        debugger
+
+        let game = this.game
+        let playerX = game.playerXYOffset[0]
+        let playerY = game.playerXYOffset[1]
+
         if (this.direction === "backward") {
-        this.ctx.drawImage(this.image, ...this.backwardSprites[this.spriteNum], this.x - 20, this.y - 10, this.width + 20, this.height + 10)}
+        this.ctx.drawImage(this.image, ...this.backwardSprites[this.spriteNum], playerX - 20,  playerY - 10, this.width + 20, this.height + 10)}
         else if (this.direction ==="forward") {
-            this.ctx.drawImage(this.image, ...this.forwardSprites[this.spriteNum], this.x - 20 , this.y - 10, this.width + 20, this.height + 10)
+            this.ctx.drawImage(this.image, ...this.forwardSprites[this.spriteNum], playerX - 20 , playerY - 10, this.width + 20, this.height + 10)
         }
         
     }

@@ -19,29 +19,29 @@ export class Background {
     update() {
         let ctx = this.game.ctx
         let playerX = this.game.playerXYOffset[0]
-        let edgeLimit = this.canvasWidth / 4
+        let edgeLimit = this.canvasWidth / 6
         let rightEdgeLimit = this.canvasWidth - edgeLimit
         let backgroundX = this.game.getBackgroundXOffset()
 
-
-        this.left = 50
-        this.right = this.game.canvasWidth - 50
 
         // 1/4 of the screen on each l/r edge is buffer
         // where player speed will be exchanged for map speed
         // debugger
 
-        // if (playerX < 50) {
-        //     this.dXDY[0] = -(edgeLimit - playerX) / 50
+        if (playerX < edgeLimit) {
+            // console.log("left boundary")
+            this.dXDY[0] = -(edgeLimit - playerX) / 50
             
             // background increases velocity "left" ie moves right 
             // to keep player on left side of screen
-        // } else if (playerX > this.canvasWidth - 50) {
-        //     this.dXDY[0] = (playerX - rightEdgeLimit) / 50
-        // } else {
-        //     this.dXDY[0] = 0
-        //     // if player is in middle of screen, background sits still
-        // }
+        } else if (playerX > this.canvasWidth - edgeLimit) {
+            this.dXDY[0] = (playerX - rightEdgeLimit) / 50
+            // console.log("right boundary")
+
+        } else {
+            this.dXDY[0] = 0
+            // if player is in middle of screen, background sits still
+        }
 
         // the reverse happens at the right side of the screen
 
@@ -56,6 +56,7 @@ export class Background {
         // when background encounters its own edges
         
         this.game.setBackgroundXOffset(this.dXDY[0])
+
         // console.log(this.game.getBackgroundXOffset())
         this.draw(ctx)
         // this.game.setTestNum(20)

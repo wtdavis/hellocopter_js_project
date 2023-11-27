@@ -7,7 +7,7 @@ export class Game {
         this.backgroundXOffset = 0
         this.backgroundDX
         this.backgroundDXStore
-        this.playerXYOffset = [100, 0]
+        this.playerXYOffset = [300, 0]
         this.playerXYVelocityStore = [0, 0]
         this.playerXYVelocity = [0, 0]
         this.projectiles = [];
@@ -37,6 +37,7 @@ export class Game {
             }
 
             this.backgroundDX = this.backgroundDXStore - this.backgroundXOffset
+            // console.log(this.backgroundDX)
             this.backgroundDXStore = this.backgroundXOffset
             // console.log(this.backgroundDX)
         }
@@ -49,17 +50,18 @@ export class Game {
         setPlayerXYOffset (numxy) {
 
 
-            this.playerXYOffset = [this.playerXYOffset[0] - numxy[0], this.playerXYOffset[1] - numxy[1]]
+            // this.playerXYOffset = [this.playerXYOffset[0] + numxy[0], this.playerXYOffset[1] + numxy[1]]
+            this.playerXYOffset = numxy
             // adjust playerXYOffset, moving player across canvas based on arg numxy
-            console.log(this.playerXYOffset)
-
+            
             // console.log(this.playerXYVelocityStore)
             // debugger 
-
+            
             let playerVelocityX = this.playerXYOffset[0] - this.playerXYVelocityStore[0] 
             let playerVelocityY = this.playerXYOffset[1] - this.playerXYVelocityStore[1]  
-
+            
             this.playerXYVelocity = [playerVelocityX, playerVelocityY]
+            // console.log(this.playerXYVelocity)
 
             this.playerXYVelocityStore = this.playerXYOffset
             // console.log(this.playerXYVelocity)
@@ -87,12 +89,11 @@ export class Game {
             this.input = input
         }
 
-        setTestNum(num) {
-            this.testNum = num
-            return this.testNum
+        setPlayer (player) {
+            this.player = player
         }
 
-        getTestNum () {
-            return this.testNum
+        getPlayer () {
+            return this.player
         }
     } 

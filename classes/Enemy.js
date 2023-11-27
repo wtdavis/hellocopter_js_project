@@ -1,8 +1,10 @@
 import { GameOver, Run, checkpoints, projectiles, enemies, gameOver } from "../utils.js"
 import { ProjectileHandler } from "./Projectile.js";
+import { Projectile } from "./Projectile.js";
 
 export class Enemy{
-    constructor(x, y, width, height, lift, speed, gun, timer, gunAngle, bulletSize) {
+    constructor(game, x, y, width, height, lift, speed, gun, timer, gunAngle, bulletSize) {
+        this.game = game
         this.x = x;
         this.y = y;
         this.width = width;
@@ -18,34 +20,39 @@ export class Enemy{
         this.gunAngle = gunAngle
         this.bulletSize = bulletSize
         this.image = document.getElementById("game_sprites")
+        this.gameWidth = this.game.backgroundDimensions.width
+        this.gameHeight = this.game.backgroundDimensions.height
+
     }
 
-    draw(ctx, offset) {
-        this.collisionPos = this.x - offset
+    draw() {
+        let ctx = this.game.ctx
+        this.collisionPos = this.x - this.game.backgroundXOffset
         if (this.gunAngle[0] === 0){
-        ctx.drawImage(this.image, 0, 170, 215, 125, this.x - offset, this.y, this.width, this.height)}
+        ctx.drawImage(this.image, 0, 170, 215, 125, this.x - this.game.backgroundXOffset, this.y, this.width, this.height)}
         else 
-        {ctx.drawImage(this.image, 220, 170, 215, 125, this.x - offset, this.y, this.width, this.height)}
+        {ctx.drawImage(this.image, 220, 170, 215, 125, this.x - this.game.backgroundXOffset, this.y, this.width, this.height)}
         
     }
     
-    isRelevant(gameWidth, gameHeight) {
+    isRelevant() {
         if (this.x + this.width  < 0 || 
-            this.x - this.collisionPos > gameWidth ||
+            this.x - this.collisionPos > this.gameWidth ||
              this.y + this.height < 0 || 
-             this.y > gameHeight ) {
+             this.y > this.gameHeight ) {
                 this.relevant = false      
              } else {this.relevant = true}
     }
 
 
 
-    update(gameWidth, gameHeight) {
+    update() {
+
         this.x += this.speed
         this.y -= this.lift
-        if (this.x < 0) {this.x = gameWidth } 
-        if (this.x  > gameWidth) {this.x = 0 }
-        if (this.y < 0 && this.y > gameHeight) {this.lift = (this.lift * -1)}
+        if (this.x < 0) {this.x = this.gameWidth } 
+        if (this.x  > this.gameWidth) {this.x = 0 }
+        if (this.y < 0 && this.y > this.gameHeight) {this.lift = (this.lift * -1)}
     }
 
     fireControl() {
@@ -57,7 +64,7 @@ export class Enemy{
     }
 
     fire() { 
-        projectiles.push(new Projectile(this.x + this.width / 2, this.y + this.height / 2, 
+        this.game.addProjectile(new Projectile(this.game, this.x + this.width / 2, this.y + this.height / 2, 
             this.bulletSize[0], this.bulletSize[1],
             this.gunAngle[0], this.gunAngle[1]))
             }
@@ -81,9 +88,10 @@ export class EnemyHandler{
         let enemies = this.game.enemies
         for (let i = 0; i < enemies.length; i++) {
             let currentEnemy = enemies[i];
-                currentEnemy.update(background.naturalWidth, background.height); 
-                    currentEnemy.draw(this.ctx, backgroun); 
-                    this.collision(player, currentEnemy)
+                currentEnemy.update(); 
+                    currentEnemy.draw(); 
+                    // debugger
+                    this.collision(this.game.player, currentEnemy)
 
             
             if (currentEnemy.gun === true)

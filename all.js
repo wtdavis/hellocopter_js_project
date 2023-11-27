@@ -26,6 +26,23 @@ class GameLoop {
     }
 
 
+    generateEnemies (numEnemies, game) {
+        // x, y, width, height, lift, speed, gun, timer, gunAngle, bulletSize
+        for (let i=0;i<numEnemies; i++) {
+            let x = this.gameDimensions[0]/(Math.random() * 20)
+            let y = this.game.canvasHeight - 50
+            let width = 50
+            let height = 50
+            let lift = 0
+            let speed = Math.random() * 20
+            let gun = true
+            let timer = Math.random() * 300
+            let gunAngle = [Math.random() * 2, Math.random() * 3]
+            let bulletSize = Math.random() * 10
+            this.game.enemies.push(new Enemy(this.game, x, y, width, height, lift, speed, gun, timer, gunAngle, bulletSize))
+        }
+    }
+
     start () {
         
         const backgroundImage = document.getElementById("game_background")
@@ -38,13 +55,16 @@ class GameLoop {
         this.projectileHandler = new ProjectileHandler(this.game)
         this.enemyHandler = new EnemyHandler(this.game)
         this.checkPointHandler = new CheckpointHandler(this.game)
-        this.player = new Player(this.game) 
+        this.player = new Player(this.game)
+        debugger
+        this.game.setPlayer(this.player)
         const input = new InputHandler(this.game)
        
+        
         // const canvas = document.getElementById("game_canvas")
         // const ctx = canvas.getContext("2d")
         
-        
+        this.generateEnemies(10)
         const start = new Checkpoint( 50, this.gameDimensions[1] - 50, 100, 50, "origin")
         const end = new Checkpoint( 2200 , this.gameDimensions[1] - 50, 100, 50, "destination")
         
