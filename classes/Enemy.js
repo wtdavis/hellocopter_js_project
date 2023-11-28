@@ -64,6 +64,7 @@ export class Enemy{
     }
 
     fire() { 
+        console.log("fire")
         this.game.addProjectile(new Projectile(this.game, this.x + this.width / 2, this.y + this.height / 2, 
             this.bulletSize[0], this.bulletSize[1],
             this.gunAngle[0], this.gunAngle[1]))

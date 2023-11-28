@@ -26,7 +26,7 @@ class GameLoop {
     }
 
 
-    generateEnemies (numEnemies, game) {
+    generateEnemies (numEnemies) {
         // x, y, width, height, lift, speed, gun, timer, gunAngle, bulletSize
         for (let i=0;i<numEnemies; i++) {
             let x = this.gameDimensions[0]/(Math.random() * 20)
@@ -34,11 +34,11 @@ class GameLoop {
             let width = 50
             let height = 50
             let lift = 0
-            let speed = Math.random() * 20
+            let speed = Math.random() * 5
             let gun = true
             let timer = Math.random() * 300
             let gunAngle = [Math.random() * 2, Math.random() * 3]
-            let bulletSize = Math.random() * 10
+            let bulletSize = [Math.random() * 10, Math.random() * 10]
             this.game.enemies.push(new Enemy(this.game, x, y, width, height, lift, speed, gun, timer, gunAngle, bulletSize))
         }
     }
@@ -56,7 +56,6 @@ class GameLoop {
         this.enemyHandler = new EnemyHandler(this.game)
         this.checkPointHandler = new CheckpointHandler(this.game)
         this.player = new Player(this.game)
-        debugger
         this.game.setPlayer(this.player)
         const input = new InputHandler(this.game)
        

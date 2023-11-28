@@ -50,6 +50,7 @@ export class ProjectileHandler  {
 
     update (){
         let projectiles = this.game.projectiles
+        console.log(projectiles[0]?.x)
         for (let i = 0; i < projectiles.length; i++) {
             let currentProjectile = projectiles[i];
             currentProjectile.update();
@@ -63,13 +64,15 @@ export class ProjectileHandler  {
     }
 
     collision (player, projectile) {
-        debugger
-        if (player.playerXYOffset[0] < projectile.collisionPos + projectile.width &&
-            player.playerXYOffset[0] + player.width > projectile.collisionPos &&
-            player.playerXYOffset[1] < projectile.y + projectile.height &&
-            player.playerXYOffset[1] + player.height > projectile.y)
+        if (this.game.playerXYOffset[0] < projectile.collisionPos + projectile.width &&
+            this.game.playerXYOffset[0] + player.width > projectile.collisionPos &&
+            this.game.playerXYOffset[1] < projectile.y + projectile.height &&
+            this.game.playerXYOffset[1] + player.height > projectile.y)
         // if (Math.sqrt(px * px  + py * py)) + (Math.sqrt(ox * ox + oy * oy)) < (Math.sqrt((px - ox) * (px - ox) + (py - oy) * (py - oy)))
-        {player.alive = false} 
+        {
+            player.alive = false
+        } 
+        
         // else {player.alive = true}
     }
 
