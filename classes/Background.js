@@ -47,10 +47,8 @@ export class Background {
 
         if (backgroundX <= 0) {
             this.game.setBackgroundXOffset(3, true);
-            console.log("edge reset left")
         } else if (backgroundX > this.image.naturalWidth - this.canvasWidth) {
             this.game.setBackgroundXOffset(this.image.naturalWidth - this.canvasWidth - 1, true);
-            console.log("edge reset right")
         }
         
         // when background encounters its own edges

@@ -40,8 +40,10 @@ export class Enemy{
             this.x - this.collisionPos > this.gameWidth ||
              this.y + this.height < 0 || 
              this.y > this.gameHeight ) {
-                this.relevant = false      
-             } else {this.relevant = true}
+                this.relevant = false;
+             } else {
+                this.relevant = true; 
+            }
     }
 
 
@@ -64,7 +66,7 @@ export class Enemy{
     }
 
     fire() { 
-        console.log("fire")
+        console.log(`fire at ${this.x}`)
         this.game.addProjectile(new Projectile(this.game, this.x + this.width / 2, this.y + this.height / 2, 
             this.bulletSize[0], this.bulletSize[1],
             this.gunAngle[0], this.gunAngle[1]))

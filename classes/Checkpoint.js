@@ -18,12 +18,13 @@ export class Checkpoint {
 
     }
 
-    update(context, background, player){
+    update(game){
+        let ctx = game.ctx
         if (this.counter > this.timer)
         {this.spriteNum++; this.spriteNum = this.spriteNum % 2; this.counter = 0}
         else
         { this.counter++}
-        this.draw(context, background.x)
+        this.draw(ctx, game.backgroundXOffset)
            
     }
 
@@ -38,13 +39,17 @@ export class Checkpoint {
  }
 
  export class CheckpointHandler {
-        constructor(){
+        constructor(game){
+            this.game = game
+            this.ctx = game.ctx
             
         }
 
-        update(context, background, player){
+        update(){
+            let checkpoints = this.game.checkpoints
+            let player = this.game.player
         for (let i = 0; i < checkpoints.length; i++){
-            checkpoints[i].update(context, background, player);
+            checkpoints[i].update(this.game);
             this.collision(player, checkpoints[i])
             
 

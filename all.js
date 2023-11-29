@@ -36,9 +36,10 @@ class GameLoop {
             let lift = 0
             let speed = Math.random() * 5
             let gun = true
-            let timer = Math.random() * 300
+            let timer = Math.random() * 10 + 70
             let gunAngle = [Math.random() * 2, Math.random() * 3]
-            let bulletSize = [Math.random() * 10, Math.random() * 10]
+            let bulletSize = [Math.random() * 5 + 3 , Math.random() * 5 + 3]
+            // let bulletSize = [2,2]
             this.game.enemies.push(new Enemy(this.game, x, y, width, height, lift, speed, gun, timer, gunAngle, bulletSize))
         }
     }
@@ -63,10 +64,10 @@ class GameLoop {
         // const canvas = document.getElementById("game_canvas")
         // const ctx = canvas.getContext("2d")
         
-        this.generateEnemies(10)
+        this.generateEnemies(5)
         const start = new Checkpoint( 50, this.gameDimensions[1] - 50, 100, 50, "origin")
         const end = new Checkpoint( 2200 , this.gameDimensions[1] - 50, 100, 50, "destination")
-        
+        this.game.checkpoints = this.game.checkpoints.concat([start, end])
         requestAnimationFrame(e => this.draw())
     }
 

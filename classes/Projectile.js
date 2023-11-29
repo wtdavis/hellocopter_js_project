@@ -50,7 +50,7 @@ export class ProjectileHandler  {
 
     update (){
         let projectiles = this.game.projectiles
-        console.log(projectiles[0]?.x)
+        // console.log(projectiles[0]?.x)
         for (let i = 0; i < projectiles.length; i++) {
             let currentProjectile = projectiles[i];
             currentProjectile.update();

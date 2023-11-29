@@ -47,6 +47,8 @@ class Player  {
         if ((this.x < this.width * 3) && this.speed < 0) {this.speed += -this.speed/30}
         if (this.x > this.gameWidth - this.width) {this.speed = -.01; this.x = this.gameWidth - this.width - .01}
         if (this.x < this.width) {this.speed = .01; this.x = this.width + .01}
+        if (this.y < 0) {this.lift = .01; this.y = 1}
+        if (this.y > this.game.canvasHeight - this.height) {this.lift = -.01; this.y = this.game.canvasHeight - this.height - 1}
 
         this.x += this.speed + this.game.backgroundDX
         this.y -= this.lift
