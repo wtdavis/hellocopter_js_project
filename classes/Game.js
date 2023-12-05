@@ -16,8 +16,8 @@ export class Game {
         this.background;
         this.player;
         //  game status 
-        this.success
-        this.run
+        this.success = false
+        this.run = false
         // background image and canvas and canvas 2d context 
         this.canvasWidth = gameDimensions[0]
         this.canvasHeight = gameDimensions[1]

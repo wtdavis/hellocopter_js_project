@@ -34,9 +34,9 @@ class GameLoop {
             let width = 50
             let height = 50
             let lift = 0
-            let speed = Math.random() * 5
+            let speed = Math.random() * 2
             let gun = true
-            let timer = Math.random() * 10 + 70
+            let timer = Math.random() * 10 + 100
             let gunAngle = [Math.random() * 2, Math.random() * 3]
             let bulletSize = [Math.random() * 5 + 3 , Math.random() * 5 + 3]
             // let bulletSize = [2,2]
@@ -68,6 +68,8 @@ class GameLoop {
         const start = new Checkpoint( 50, this.gameDimensions[1] - 50, 100, 50, "origin")
         const end = new Checkpoint( 2200 , this.gameDimensions[1] - 50, 100, 50, "destination")
         this.game.checkpoints = this.game.checkpoints.concat([start, end])
+        document.querySelector(".gameModal").classList.toggle("hidden")
+        this.game.run = true
         requestAnimationFrame(e => this.draw())
     }
 
@@ -79,21 +81,22 @@ class GameLoop {
         this.checkPointHandler.update()
         this.player.update()
         
-        requestAnimationFrame(e => {this.draw()})
+        if (this.game.run) {
+            requestAnimationFrame(e => {this.draw()})
+        }
     }
 
     step () {
-
     }
-
 }
 
     let currentGameLoop;
     window.addEventListener("keydown", function (e) {
         if (e.key === " ") {
+            e.preventDefault() 
             currentGameLoop = new GameLoop();
-            currentGameLoop.start()
-        }
+            currentGameLoop.start();
+    x        }
         // console.log("gameloop loaded")
     } )
 

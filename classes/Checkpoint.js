@@ -15,7 +15,6 @@ export class Checkpoint {
         this.spriteNum = 0
         this.timer = 50
         this.counter = 0
-
     }
 
     update(game){
@@ -24,8 +23,7 @@ export class Checkpoint {
         {this.spriteNum++; this.spriteNum = this.spriteNum % 2; this.counter = 0}
         else
         { this.counter++}
-        this.draw(ctx, game.backgroundXOffset)
-           
+        this.draw(ctx, game.backgroundXOffset) 
     }
 
     draw(context, offset){
@@ -34,15 +32,12 @@ export class Checkpoint {
         context.drawImage(this.image, ...this.sprites[this.spriteNum], this.x - offset, this.y - this.height / 5, this.width + this.width / 5 , this.height + this.height / 5)
         // context.drawImage(this.image, sx, sy, swidth, sheight, this.x, this.y, this.width, this.height)
     }
-
-    
  }
 
  export class CheckpointHandler {
         constructor(game){
             this.game = game
             this.ctx = game.ctx
-            
         }
 
         update(){
@@ -51,8 +46,6 @@ export class Checkpoint {
         for (let i = 0; i < checkpoints.length; i++){
             checkpoints[i].update(this.game);
             this.collision(player, checkpoints[i])
-            
-
         }}
 
         collision (player, object) {

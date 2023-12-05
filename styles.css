@@ -127,6 +127,14 @@ ul li {
     color: black;
 }
 
+.gameModalHidden {
+    position: absolute;
+    display: hidden;
+    background-color: var(--darkblue);
+    border: 2px solid purple;
+    color: black;
+}
+
 .main {
     --darkblue:  rgb(1, 1, 150);
     --midblue: rgb(27, 61, 136);
@@ -137,3 +145,7 @@ ul li {
     --green: rgb(26, 129, 26);
     --darkgreen: rgb(1, 56, 1);
 }       
+
+.hidden {
+    display: none;
+}
