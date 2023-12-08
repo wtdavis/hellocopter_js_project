@@ -2,11 +2,11 @@ export class Game {
     constructor(gameDimensions) {
         
         this.input = [];
-        this.backgroundXOffset = 1400
+        this.backgroundXOffset = 0
         this.backgroundDX
         this.backgroundDXStore
     // player position variables
-        this.playerXYOffset = [2300, 0]
+        this.playerXYOffset = [300, 0]
         this.playerXYVelocityStore = [0, 0]
         this.playerXYVelocity = [0, 0]
         // game objects

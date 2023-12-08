@@ -65,8 +65,8 @@ class GameLoop {
         // const ctx = canvas.getContext("2d")
         
         this.generateEnemies(2)
-        const start = new Checkpoint( 50, this.gameDimensions[1] - 50, 100, 50, "origin")
-        const end = new Checkpoint( 2200 , this.gameDimensions[1] - 50, 100, 50, "destination")
+        const start = new Checkpoint( 200, this.gameDimensions[1] - 50, 100, 50, "origin")
+        const end = new Checkpoint( 2000 , this.gameDimensions[1] - 50, 100, 50, "destination")
         this.game.checkpoints = this.game.checkpoints.concat([start, end])
         document.querySelector(".gameModal").classList.toggle("hidden")
         this.game.run = true

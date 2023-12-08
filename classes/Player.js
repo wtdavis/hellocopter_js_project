@@ -38,9 +38,37 @@ class Player  {
                             [500, 480, 230, 120],
                             [750, 480, 230, 120]
                             ]
+
+        this.explosionSprites = [
+            [46, 22, 70, 65],
+            [150, 20, 80, 70],
+            [260, 16, 110, 70],
+            [370, 12, 110, 80],
+            // first row
+            [10, 90, 145, 90],
+            [155, 90, 145, 90],
+            [305, 90, 145, 90],
+            // second row
+            [10, 180, 145, 90],
+            [155, 180, 145, 90],
+            [305, 180, 145, 90],
+            // third row
+            [10, 275, 145, 90],
+            [155, 275, 145, 90],
+            [295, 275, 145, 90],
+            // fourth row
+            [10, 380, 145, 90],
+            [155, 380, 145, 90],
+            [295, 380, 145, 90]
+            // bottom row
+        ]
+
         this.spriteNum = 0 
         this.counter = 0
+        this.explosionCounter = 0
+        this.explosionSpritesCounter = 0
         this.image = document.getElementById("game_sprites")
+        this.explosions = document.getElementById("explosion_sprites")
 }
     update() {
         let input = this.game.input
@@ -69,7 +97,11 @@ class Player  {
             this.counter++
         }
         this.game.setPlayerXYOffset([this.x, this.y])
-        this.draw()
+        if (!this.alive) {
+            this.explode()
+        } else {
+            this.draw()
+        }
     }
 
     
@@ -80,16 +112,21 @@ class Player  {
         let playerX = game.playerXYOffset[0]
         let playerY = game.playerXYOffset[1]
         let sprites = []
+        let size = []
         if (this.direction === "forward" ) {
             if (this.pickup) {
+                size = [this.width + 10, this.height + 10]
                 sprites = this.forwardCapySprites[this.spriteNum]
             } else {
+                size = [this.width, this.height]
                 sprites = this.forwardSprites[this.spriteNum]
             }
         } else if (this.direction === "backward") {
             if (this.pickup) {
+                size = [this.width + 10, this.height + 10]
                 sprites = this.backwardCapySprites[this.spriteNum]
             } else {
+                size = [this.width, this.height]
                 sprites = this.backwardSprites[this.spriteNum]
             }
         }
@@ -107,8 +144,23 @@ class Player  {
         //         this.ctx.drawImage(this.image, ...this.forwardCapySprites[this.spriteNum], playerX - 20 , playerY - 10, this.width + 20, this.height + 10)
         //     }
         // }
-    this.ctx.drawImage(this.image, ...sprites, playerX - 20, playerY - 10, this.width + 20, this.height + 10)        
+    this.ctx.drawImage(this.image, ...sprites, playerX - 20, playerY - 10, size[0] + 20, size[1] + 10)        
 
+    }
+
+    explode () {
+            this.explosionCounter++
+        if (this.explosionCounter > 4) {
+            this.explosionCounter = 0
+            this.explosionSpritesCounter++
+            if (this.explosionSpritesCounter > 15) {
+                this.explosionSpritesCounter = 0
+            }
+        }
+        let ctx = this.game.ctx
+        let sprites = this.explosionSprites[this.explosionSpritesCounter]
+
+            ctx.drawImage(this.explosions, ...sprites, this.game.playerXYOffset[0], this.game.playerXYOffset[1], sprites[2], sprites[3])
     }
 
 

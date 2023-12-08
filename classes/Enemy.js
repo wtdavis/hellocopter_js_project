@@ -22,16 +22,30 @@ export class Enemy{
         this.image = document.getElementById("game_sprites")
         this.gameWidth = this.game.backgroundDimensions.width
         this.gameHeight = this.game.backgroundDimensions.height
-
+        this.backwardSprites = [[0, 170, 220, 130], [230, 170, 220, 130]]
+        this.forwardSprites  = [[460, 170, 230, 130], [690, 170, 220, 130]]
     }
 
     draw() {
         let ctx = this.game.ctx
         this.collisionPos = this.x - this.game.backgroundXOffset
-        if (this.gunAngle[0] === 0){
-        ctx.drawImage(this.image, 0, 170, 215, 125, this.x - this.game.backgroundXOffset, this.y - 10, this.width, this.height)}
-        else 
-        {ctx.drawImage(this.image, 220, 170, 215, 125, this.x - this.game.backgroundXOffset, this.y - 10, this.width, this.height)}
+        let sprite = []
+        if (this.speed > 0) {
+            if (this.gunAngle[0] > 0) {
+                sprite = this.forwardSprites[0]
+            } else {
+                sprite = this.forwardSprites[1]
+            }
+        } else {
+            if (this.gunAngle[0] < 0) {
+                sprite = this.backwardSprites[1]
+            } else {
+                sprite = this.backwardSprites[0]
+            }
+
+        }
+
+        ctx.drawImage(this.image, ...sprite, this.x - this.game.backgroundXOffset, this.y - 10, this.width, this.height)
         
     }
     
