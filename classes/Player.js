@@ -28,6 +28,16 @@ class Player  {
                             [500, 0, 230, 80],
                             [750, 0, 230, 80]
                             ]
+        this.backwardCapySprites = [[ 20, 380, 230, 100],
+                            [ 250 , 380, 230, 100],
+                            [500, 380, 230, 100],  
+                            [750, 380, 230, 100]
+                            ]
+        this.forwardCapySprites = [[ 20, 480, 230, 120],
+                            [ 250 , 480, 230, 120],
+                            [500, 480, 230, 120],
+                            [750, 480, 230, 120]
+                            ]
         this.spriteNum = 0 
         this.counter = 0
         this.image = document.getElementById("game_sprites")
@@ -69,13 +79,36 @@ class Player  {
         let game = this.game
         let playerX = game.playerXYOffset[0]
         let playerY = game.playerXYOffset[1]
-
-        if (this.direction === "backward") {
-        this.ctx.drawImage(this.image, ...this.backwardSprites[this.spriteNum], playerX - 20,  playerY - 10, this.width + 20, this.height + 10)}
-        else if (this.direction ==="forward") {
-            this.ctx.drawImage(this.image, ...this.forwardSprites[this.spriteNum], playerX - 20 , playerY - 10, this.width + 20, this.height + 10)
+        let sprites = []
+        if (this.direction === "forward" ) {
+            if (this.pickup) {
+                sprites = this.forwardCapySprites[this.spriteNum]
+            } else {
+                sprites = this.forwardSprites[this.spriteNum]
+            }
+        } else if (this.direction === "backward") {
+            if (this.pickup) {
+                sprites = this.backwardCapySprites[this.spriteNum]
+            } else {
+                sprites = this.backwardSprites[this.spriteNum]
+            }
         }
-        
+
+        // if (this.pickup = false) { 
+        //     if (this.direction === "backward") {
+        //         this.ctx.drawImage(this.image, ...this.backwardSprites[this.spriteNum], playerX - 20,  playerY - 10, this.width + 20, this.height + 10)}
+        //         else if (this.direction ==="forward") {
+        //             this.ctx.drawImage(this.image, ...this.forwardSprites[this.spriteNum], playerX - 20 , playerY - 10, this.width + 20, this.height + 10)
+        //         }
+        // } else {
+        //     if (this.direction === "backward") {
+        //     this.ctx.drawImage(this.image, ...this.backwardCapySprites[this.spriteNum], playerX - 20,  playerY - 10, this.width + 20, this.height + 10)}
+        //     else if (this.direction ==="forward") {
+        //         this.ctx.drawImage(this.image, ...this.forwardCapySprites[this.spriteNum], playerX - 20 , playerY - 10, this.width + 20, this.height + 10)
+        //     }
+        // }
+    this.ctx.drawImage(this.image, ...sprites, playerX - 20, playerY - 10, this.width + 20, this.height + 10)        
+
     }
 
 

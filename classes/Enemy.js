@@ -29,9 +29,9 @@ export class Enemy{
         let ctx = this.game.ctx
         this.collisionPos = this.x - this.game.backgroundXOffset
         if (this.gunAngle[0] === 0){
-        ctx.drawImage(this.image, 0, 170, 215, 125, this.x - this.game.backgroundXOffset, this.y, this.width, this.height)}
+        ctx.drawImage(this.image, 0, 170, 215, 125, this.x - this.game.backgroundXOffset, this.y - 10, this.width, this.height)}
         else 
-        {ctx.drawImage(this.image, 220, 170, 215, 125, this.x - this.game.backgroundXOffset, this.y, this.width, this.height)}
+        {ctx.drawImage(this.image, 220, 170, 215, 125, this.x - this.game.backgroundXOffset, this.y - 10, this.width, this.height)}
         
     }
     

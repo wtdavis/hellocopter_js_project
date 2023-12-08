@@ -11,7 +11,7 @@ export class Checkpoint {
         this.height = height
         this.image = document.getElementById("game_sprites")
         this.collisionPos = 0
-        this.sprites = [[655, 200, 150, 130], [820, 200, 150, 130]]
+        this.sprites = [[1010, 220, 110, 110], [1010, 220, 110, 110]]
         this.spriteNum = 0
         this.timer = 50
         this.counter = 0

@@ -64,7 +64,7 @@ class GameLoop {
         // const canvas = document.getElementById("game_canvas")
         // const ctx = canvas.getContext("2d")
         
-        this.generateEnemies(5)
+        this.generateEnemies(2)
         const start = new Checkpoint( 50, this.gameDimensions[1] - 50, 100, 50, "origin")
         const end = new Checkpoint( 2200 , this.gameDimensions[1] - 50, 100, 50, "destination")
         this.game.checkpoints = this.game.checkpoints.concat([start, end])
@@ -96,7 +96,7 @@ class GameLoop {
             e.preventDefault() 
             currentGameLoop = new GameLoop();
             currentGameLoop.start();
-    x        }
+            }
         // console.log("gameloop loaded")
     } )
 
@@ -252,4 +252,10 @@ function animate(timeStamp, prevTimeStamp) {
 // animate()
 // animate()
 
+})
+
+window.addEventListener("keydown", function(e) {
+    if (e.key === "p") {
+        return '<li>This is a test</li>'
+    }
 })

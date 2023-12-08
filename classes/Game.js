@@ -6,7 +6,7 @@ export class Game {
         this.backgroundDX
         this.backgroundDXStore
     // player position variables
-        this.playerXYOffset = [300, 0]
+        this.playerXYOffset = [2300, 0]
         this.playerXYVelocityStore = [0, 0]
         this.playerXYVelocity = [0, 0]
         // game objects
