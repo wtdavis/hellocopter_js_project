@@ -2,7 +2,7 @@ export class Game {
     constructor(gameDimensions) {
         
         this.input = [];
-        this.backgroundXOffset = 0
+        this.backgroundXOffset = 1400
         this.backgroundDX
         this.backgroundDXStore
     // player position variables
