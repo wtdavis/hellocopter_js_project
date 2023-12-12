@@ -10,8 +10,7 @@ class Player  {
         this.width = 60
         this.height = 30
         this.x = game.playerXYOffset[0]
-        this.y = this.gameHeight - this.height
-        this.relSpeed = 0
+        this.y = game.playerXYOffset[1]
         this.speed = 0
         this.lift = 0
         this.alive = true
@@ -39,28 +38,47 @@ class Player  {
                             [750, 480, 230, 120]
                             ]
 
+        // this.explosionSprites = [
+        //     [46, 22, 70, 65],
+        //     [150, 20, 80, 70],
+        //     [260, 16, 110, 70],
+        //     [370, 12, 110, 80],
+        //     // first row
+        //     [10, 90, 145, 90],
+        //     [155, 90, 145, 90],
+        //     [305, 90, 145, 90],
+        //     // second row
+        //     [10, 180, 145, 90],
+        //     [155, 180, 145, 90],
+        //     [305, 180, 145, 90],
+        //     // third row
+        //     [10, 275, 145, 90],
+        //     [155, 275, 145, 90],
+        //     [295, 275, 145, 90],
+        //     // fourth row
+        //     [10, 380, 145, 90],
+        //     [155, 380, 145, 90],
+        //     [295, 380, 145, 90]
+        //     // bottom row
+        // ]
+
         this.explosionSprites = [
-            [46, 22, 70, 65],
-            [150, 20, 80, 70],
-            [260, 16, 110, 70],
-            [370, 12, 110, 80],
-            // first row
-            [10, 90, 145, 90],
-            [155, 90, 145, 90],
-            [305, 90, 145, 90],
-            // second row
-            [10, 180, 145, 90],
-            [155, 180, 145, 90],
-            [305, 180, 145, 90],
-            // third row
-            [10, 275, 145, 90],
-            [155, 275, 145, 90],
-            [295, 275, 145, 90],
-            // fourth row
-            [10, 380, 145, 90],
-            [155, 380, 145, 90],
-            [295, 380, 145, 90]
-            // bottom row
+            [0, 0, 150, 100],
+            [0, 200, 150, 100],
+            [0, 300, 150, 100],
+            [0, 400, 150, 100],
+            [0, 500, 150, 100],
+            [0, 600, 150, 100],
+            [0, 700, 150, 100],
+            [0, 800, 150, 100],
+            [0, 900, 150, 100],
+            [0, 1000, 150, 100],
+            [0, 1100, 150, 100],
+            [0, 1200, 150, 100],
+            [0, 1300, 150, 100],
+            [0, 1400, 150, 100],
+            [0, 1500, 150, 100],
+            [0, 1600, 150, 100]  
         ]
 
         this.spriteNum = 0 
@@ -72,6 +90,16 @@ class Player  {
 }
     update() {
         let input = this.game.input
+        this.x = this.game.playerXYOffset[0]
+        this.y = this.game.playerXYOffset[1]
+        // grab latest variable values from game instance 
+        if (this.counter > 10)
+        {this.spriteNum++;
+        this.spriteNum = this.spriteNum % 4; this.counter = 0} else {
+            this.counter++
+        }
+        // iterate sprite counter for player model
+        
         if (input.includes('w') && this.lift < 2) {this.lift += .03}
         if (!input.includes('w') && this.lift > 0) {this.lift -= .03}
         if (input.includes('s') && this.lift > -2) {this.lift -= .02}
@@ -90,31 +118,41 @@ class Player  {
 
         this.x += this.speed + this.game.backgroundDX
         this.y -= this.lift
-        //sprite cycling
-        if (this.counter > 10)
-        {this.spriteNum++;
-        this.spriteNum = this.spriteNum % 4; this.counter = 0} else {
-            this.counter++
-        }
+        
         this.game.setPlayerXYOffset([this.x, this.y])
         if (!this.alive) {
+            this.game.alive = false
             this.explode()
         } else {
             this.draw()
         }
     }
 
-    
+    reset () {
+        // this.game.playerXYOffset = [300, this.gameHeight - this.height - 20]
+        
+        this.x = this.game.playerXYOffset[0];
+        this.y = this.game.playerXYOffset[1];
+        this.speed = 0;
+        this.lift = 0;
+        this.alive = true;
+        this.pickup = false;
+        this.success = false;
+        this.direction = "forward";
+
+    }
 
     draw() {
 
         let game = this.game
         let playerX = game.playerXYOffset[0]
         let playerY = game.playerXYOffset[1]
+
         let sprites = []
         let size = []
+
         if (this.direction === "forward" ) {
-            if (this.pickup) {
+            if (this.game.pickup) {
                 size = [this.width + 10, this.height + 10]
                 sprites = this.forwardCapySprites[this.spriteNum]
             } else {
@@ -122,7 +160,7 @@ class Player  {
                 sprites = this.forwardSprites[this.spriteNum]
             }
         } else if (this.direction === "backward") {
-            if (this.pickup) {
+            if (this.game.pickup) {
                 size = [this.width + 10, this.height + 10]
                 sprites = this.backwardCapySprites[this.spriteNum]
             } else {
@@ -130,20 +168,8 @@ class Player  {
                 sprites = this.backwardSprites[this.spriteNum]
             }
         }
+// produce correct sprite for forward / backward, with capy or without, correct size
 
-        // if (this.pickup = false) { 
-        //     if (this.direction === "backward") {
-        //         this.ctx.drawImage(this.image, ...this.backwardSprites[this.spriteNum], playerX - 20,  playerY - 10, this.width + 20, this.height + 10)}
-        //         else if (this.direction ==="forward") {
-        //             this.ctx.drawImage(this.image, ...this.forwardSprites[this.spriteNum], playerX - 20 , playerY - 10, this.width + 20, this.height + 10)
-        //         }
-        // } else {
-        //     if (this.direction === "backward") {
-        //     this.ctx.drawImage(this.image, ...this.backwardCapySprites[this.spriteNum], playerX - 20,  playerY - 10, this.width + 20, this.height + 10)}
-        //     else if (this.direction ==="forward") {
-        //         this.ctx.drawImage(this.image, ...this.forwardCapySprites[this.spriteNum], playerX - 20 , playerY - 10, this.width + 20, this.height + 10)
-        //     }
-        // }
     this.ctx.drawImage(this.image, ...sprites, playerX - 20, playerY - 10, size[0] + 20, size[1] + 10)        
 
     }
@@ -160,9 +186,10 @@ class Player  {
         let ctx = this.game.ctx
         let sprites = this.explosionSprites[this.explosionSpritesCounter]
 
-            ctx.drawImage(this.explosions, ...sprites, this.game.playerXYOffset[0], this.game.playerXYOffset[1], sprites[2], sprites[3])
+            ctx.drawImage(this.explosions, ...sprites, this.game.playerXYOffset[0] - sprites[2]/2 + 80, this.game.playerXYOffset[1] - sprites[3]/2 + 40, sprites[2] - 20, sprites[3] - 20)
     }
 
+   
 
 }   
 

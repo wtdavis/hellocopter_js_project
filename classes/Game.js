@@ -1,23 +1,5 @@
 export class Game {
     constructor(gameDimensions) {
-        
-        this.input = [];
-        this.backgroundXOffset = 0
-        this.backgroundDX
-        this.backgroundDXStore
-    // player position variables
-        this.playerXYOffset = [300, 0]
-        this.playerXYVelocityStore = [0, 0]
-        this.playerXYVelocity = [0, 0]
-        // game objects
-        this.projectiles = [];
-        this.enemies = [];
-        this.checkpoints = []
-        this.background;
-        this.player;
-        //  game status 
-        this.success = false
-        this.run = false
         // background image and canvas and canvas 2d context 
         this.canvasWidth = gameDimensions[0]
         this.canvasHeight = gameDimensions[1]
@@ -26,7 +8,45 @@ export class Game {
         this.canvas.width = this.canvasWidth
         this.ctx = this.canvas.getContext("2d")
         this.backgroundDimensions = document.getElementById("game_background")
-        
+        this.num = Math.random()
+        // background position variables
+        this.backgroundXOffset = 0
+        this.backgroundDX
+        this.backgroundDXStore
+        // player position variables
+        this.playerXYOffset = [300, this.canvasHeight - 40]
+        this.playerXYVelocityStore = [0, 0]
+        this.playerXYVelocity = [0, 0]
+        // game objects
+        this.input = [];
+        this.projectiles = [];
+        this.enemies = [];
+        this.checkpoints = []
+        this.background;
+        this.player;
+        //  game status 
+        this.alive = true
+        this.pickup = false
+        this.success = false
+        this.run = true
+      
+        }
+
+        reset () {
+            debugger
+            this.backgroundXOffset = 5;
+            this.backgroundDX = 0;
+            this.backgroundDXStore = 0;
+            // reset background
+            this.playerXYVelocityStore = [0, 0]
+            this.playerXYVelocity = [0, 0]
+            this.setPlayerXYOffset([300, this.canvasHeight - 40]);
+            this.alive = true;
+            this.pickup = false;
+            this.success = false;
+            // reset player stuff local to game
+            this.run = true;
+            this.projectiles = []
         }
 
         getBackgroundXOffset() {
@@ -55,17 +75,17 @@ export class Game {
 
 
             // this.playerXYOffset = [this.playerXYOffset[0] + numxy[0], this.playerXYOffset[1] + numxy[1]]
-            this.playerXYOffset = numxy
+            this.playerXYOffset = numxy;
             // adjust playerXYOffset, moving player across canvas based on arg numxy
             
             // debugger 
             
-            let playerVelocityX = this.playerXYOffset[0] - this.playerXYVelocityStore[0] 
-            let playerVelocityY = this.playerXYOffset[1] - this.playerXYVelocityStore[1]  
+            let playerVelocityX = this.playerXYOffset[0] - this.playerXYVelocityStore[0] ;
+            let playerVelocityY = this.playerXYOffset[1] - this.playerXYVelocityStore[1]  ;
             
-            this.playerXYVelocity = [playerVelocityX, playerVelocityY]
+            this.playerXYVelocity = [playerVelocityX, playerVelocityY];
 
-            this.playerXYVelocityStore = this.playerXYOffset
+            this.playerXYVelocityStore = this.playerXYOffset;
         }
 
 
@@ -75,7 +95,7 @@ export class Game {
         }
 
         removeProjectile (projectile) {
-            console.log(`irrelevant at ${projectile.x}`)
+            // console.log(`irrelevant at ${projectile.x}`)
 
             this.projectiles.splice(this.projectiles.indexOf(projectile), 1)
         }

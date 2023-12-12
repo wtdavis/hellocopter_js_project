@@ -120,7 +120,7 @@ ul li {
 
 }
 
-.gameModal {
+.newGameModal {
     position: absolute;
     top: calc(50vh - 250px);
     left: calc(50vw - 500px);

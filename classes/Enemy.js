@@ -24,6 +24,7 @@ export class Enemy{
         this.gameHeight = this.game.backgroundDimensions.height
         this.backwardSprites = [[0, 170, 220, 130], [230, 170, 220, 130]]
         this.forwardSprites  = [[460, 170, 230, 130], [690, 170, 220, 130]]
+        this.stats = [this.x, this.y, this.speed]
     }
 
     draw() {
@@ -60,7 +61,7 @@ export class Enemy{
             }
     }
 
-
+    
 
     update() {
 
@@ -80,13 +81,17 @@ export class Enemy{
     }
 
     fire() { 
-        console.log(`fire at ${this.x}`)
+        // console.log(`fire at ${this.x}`)
         this.game.addProjectile(new Projectile(this.game, this.x + this.width / 2, this.y + this.height / 2, 
             this.bulletSize[0], this.bulletSize[1],
             this.gunAngle[0], this.gunAngle[1]))
             }
 
     
+    reset () {
+        this.x = this.stats[0]
+    }
+
 }
 
 export class EnemyHandler{
@@ -96,10 +101,13 @@ export class EnemyHandler{
         this.ctx = game.ctx
         
     }
-        
 
-
-
+    reset () {
+        let enemies = this.game.enemies;
+        for (let i=0; i<enemies.length;i++){
+            enemies[i].reset()
+        }
+    }
 
     update() {
         let enemies = this.game.enemies
@@ -114,9 +122,6 @@ export class EnemyHandler{
             if (currentEnemy.gun === true)
                 {currentEnemy.fireControl()};
 
-            
-
-            
         }
     }
     
@@ -127,4 +132,6 @@ export class EnemyHandler{
             player.y + player.height > object.y)
         {player.alive = false} 
     }
+
+    
 }

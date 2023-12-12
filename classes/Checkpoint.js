@@ -2,27 +2,33 @@ import { GameOver, Run, checkpoints, projectiles, enemies, gameOver } from "../u
 
 
 export class Checkpoint {
-    constructor( x, y, width, height, type){
+    constructor( x, y, width, height, type, num){
         // this.context = context
         this.type = type
         this.x = x
         this.y = y
         this.width = width
         this.height = height
-        this.image = document.getElementById("game_sprites")
+        this.image = document.getElementById("base_sprites")
         this.collisionPos = 0
-        this.sprites = [[1010, 220, 110, 110], [1010, 220, 110, 110]]
-        this.spriteNum = 0
+        this.sprites = [[150, 260, 210, 90], [320, 70, 140, 140], [150, 70, 140, 140]]
+        this.spriteNum = num
         this.timer = 50
         this.counter = 0
     }
 
     update(game){
         let ctx = game.ctx
-        if (this.counter > this.timer)
-        {this.spriteNum++; this.spriteNum = this.spriteNum % 2; this.counter = 0}
-        else
-        { this.counter++}
+        // if (this.counter > this.timer)
+        // {this.spriteNum++; this.spriteNum = this.spriteNum % 2; this.counter = 0}
+        // else
+        // { this.counter++}
+        if (this.type === "destination" && game.pickup === true) {
+            this.spriteNum = 2
+        } else if (this.type === "destination" && game.pickup === false) {
+            this.spriteNum = 1
+        }
+
         this.draw(ctx, game.backgroundXOffset) 
     }
 
@@ -46,16 +52,17 @@ export class Checkpoint {
         for (let i = 0; i < checkpoints.length; i++){
             checkpoints[i].update(this.game);
             this.collision(player, checkpoints[i])
-        }}
+        }
+        }
 
         collision (player, object) {
             if ((player.x < object.collisionPos + object.width &&
                 player.x + player.width > object.collisionPos &&
                 player.y < object.y + object.height &&
                 player.y + player.height > object.y) ) 
-                    {if (object.type === "destination") {player.pickup = true} 
-                     else if (object.type === "origin" && player.pickup === true)
-                        {player.success = true}
+                    {if (object.type === "destination") {player.pickup = true; this.game.pickup = true} 
+                        else if (object.type === "origin" && player.pickup === true)
+                            {player.success = true}
+                    }
         }
- }
 }

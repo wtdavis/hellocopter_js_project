@@ -9,13 +9,13 @@ import { GameOver, Run, checkpoints, projectiles, enemies, gameOver } from "./ut
 // import Canvas from "./canvas.js" ****modules! refactor
 window.addEventListener("DOMContentLoaded", function () {
 
-
+// let gameLoops = []
 
 class GameLoop {
-    constructor () {
+    constructor (num) {
         this.success = false;
         this.gameOver = false;
-        this.run = false;
+        this.run = true;
         this.game
         this.background
         this.projectileHandler
@@ -23,13 +23,14 @@ class GameLoop {
         this.checkPointHandler
         this.player
         this.gameDimensions
+        this.num = num
     }
 
 
     generateEnemies (numEnemies) {
         // x, y, width, height, lift, speed, gun, timer, gunAngle, bulletSize
         for (let i=0;i<numEnemies; i++) {
-            let x = this.gameDimensions[0]/(Math.random() * 20)
+            let x = this.gameDimensions[0]/(Math.random())
             let y = this.game.canvasHeight - 50
             let width = 50
             let height = 50
@@ -46,62 +47,118 @@ class GameLoop {
 
     start () {
         
+
         const backgroundImage = document.getElementById("game_background")
         this.gameDimensions = [(window.innerWidth - 20), backgroundImage.naturalHeight]
         // create new game, then add is as arg to each instance of other classes.
         // game instance contains necessary common variables
-
+        
         this.game = new Game(this.gameDimensions)
         this.background = new Background("game_background", this.game)
+        this.checkPointHandler = new CheckpointHandler(this.game)
         this.projectileHandler = new ProjectileHandler(this.game)
         this.enemyHandler = new EnemyHandler(this.game)
-        this.checkPointHandler = new CheckpointHandler(this.game)
         this.player = new Player(this.game)
         this.game.setPlayer(this.player)
         const input = new InputHandler(this.game)
-       
+        
         
         // const canvas = document.getElementById("game_canvas")
         // const ctx = canvas.getContext("2d")
         
         this.generateEnemies(2)
-        const start = new Checkpoint( 200, this.gameDimensions[1] - 50, 100, 50, "origin")
-        const end = new Checkpoint( 2000 , this.gameDimensions[1] - 50, 100, 50, "destination")
+        const start = new Checkpoint( 200, this.gameDimensions[1] - 100, 180, 100, "origin", 0)
+        const end = new Checkpoint( 2000 , this.gameDimensions[1] - 100, 180, 100, "destination", 1)
         this.game.checkpoints = this.game.checkpoints.concat([start, end])
-        document.querySelector(".gameModal").classList.toggle("hidden")
+        // document.querySelector(".newGameModal").classList.toggle("hidden")
         this.game.run = true
-        requestAnimationFrame(e => this.draw())
+        requestAnimationFrame(e => this.draw(Math.random()))
+      
     }
 
-    draw() {
+    reset () {
+        // document.querySelector(".gameModal").classList.toggle("hidden")
+        // this.game.run = true
+        // this.game.playerXYOffset = [200, 30]
+        // this.game.backgroundXOffset = 0
+        // this.game.alive = true
+        // this.game.pickup = false
+        // this.game.success = false
+        this.game.reset();
+        this.player.reset();
+        this.enemyHandler.reset();
+    }
+
+    draw(num) {
+        if (num) {
+            this.num = num
+        }
         this.game.ctx.clearRect(0, 0, ...this.gameDimensions)
         this.background.update()
+        this.checkPointHandler.update()
         this.projectileHandler.update()
         this.enemyHandler.update()
-        this.checkPointHandler.update()
         this.player.update()
         
-        if (this.game.run) {
-            requestAnimationFrame(e => {this.draw()})
+        if (this.game.run && this.run) {
+            let num = this.num
+            // console.log(num)
+            requestAnimationFrame(e => {this.draw(this.num)})
         }
     }
 
-    step () {
-    }
+
 }
 
     let currentGameLoop;
+    
     window.addEventListener("keydown", function (e) {
         if (e.key === " ") {
             e.preventDefault() 
-            currentGameLoop = new GameLoop();
-            currentGameLoop.start();
+            if (currentGameLoop) {
+                // currentGameLoop.run = false
+                // currentGameLoop.game.alive = true
+                // currentGameLoop.game.playerXYOffset = [200, 30]
+                currentGameLoop.reset();
+            
+            } else {
+                // debugger
+                currentGameLoop = new GameLoop(1);
+                currentGameLoop.start();
+            }
+            debugger
+            let modal = document.querySelector("newGameModal")
+            modal.remove()
+            // gameLoops.push(currentGameLoop);
             }
         // console.log("gameloop loaded")
     } )
 
+    window.addEventListener("keydown", function (e) {
+        if (e.key.toLowerCase() === "p" ) {
+            if (currentGameLoop.run) {
+                currentGameLoop.run = false;
+                document.getElementsByClassName("newGameModal");
 
+            } else {
+                currentGameLoop.run = true
+                currentGameLoop.draw()
+            }
+        }
+    })
 
+    const newGameModal =  document.createElement("div")
+
+    let header = document.querySelector("header")
+
+    newGameModal.setAttribute("class", "newGameModal")
+    newGameModal.setAttribute("id", "modal")
+
+    let newGameModalTextItem1 = document.createElement("p")
+    newGameModal.appendChild(newGameModalTextItem1)
+    newGameModalTextItem1.innerText = "press space to begin!"
+
+    header.append(newGameModal)
 // let GameOver = false
 // let Run = false
 
@@ -252,10 +309,4 @@ function animate(timeStamp, prevTimeStamp) {
 // animate()
 // animate()
 
-})
-
-window.addEventListener("keydown", function(e) {
-    if (e.key === "p") {
-        return '<li>This is a test</li>'
-    }
 })
