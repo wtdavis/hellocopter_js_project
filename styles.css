@@ -120,13 +120,16 @@ ul li {
 
 }
 
-.newGameModal {
+.gameModal {
     position: absolute;
     top: calc(50vh - 250px);
     left: calc(50vw - 500px);
     height: 480px;
     width: 1000px;
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     background-color: var(--darkgreen);
     border: 2px solid purple;
     color: black;
@@ -138,6 +141,10 @@ ul li {
     background-color: var(--darkblue);
     border: 2px solid purple;
     color: black;
+}
+
+.modalText {
+    color: white
 }
 
 .main {

@@ -33,7 +33,6 @@ export class Game {
         }
 
         reset () {
-            debugger
             this.backgroundXOffset = 5;
             this.backgroundDX = 0;
             this.backgroundDXStore = 0;
