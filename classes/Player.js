@@ -118,14 +118,16 @@ class Player  {
 
         this.x += this.speed + this.game.backgroundDX
         this.y -= this.lift
-        
         this.game.setPlayerXYOffset([this.x, this.y])
+        // actual update step
+                 
         if (!this.alive) {
             this.game.alive = false
             this.explode()
         } else {
             this.draw()
         }
+        //animation handling w death condition
     }
 
     reset () {

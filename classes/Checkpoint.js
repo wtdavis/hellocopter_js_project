@@ -49,20 +49,27 @@ export class Checkpoint {
         update(){
             let checkpoints = this.game.checkpoints
             let player = this.game.player
+            let game = this.game
         for (let i = 0; i < checkpoints.length; i++){
             checkpoints[i].update(this.game);
-            this.collision(player, checkpoints[i])
+            this.collision(game, checkpoints[i])
         }
         }
 
-        collision (player, object) {
-            if ((player.x < object.collisionPos + object.width &&
-                player.x + player.width > object.collisionPos &&
-                player.y < object.y + object.height &&
-                player.y + player.height > object.y) ) 
-                    {if (object.type === "destination") {player.pickup = true; this.game.pickup = true} 
-                        else if (object.type === "origin" && player.pickup === true)
-                            {player.success = true}
+        collision (game, object) {
+            let xPosition = object.x - game.backgroundXOffset
+            
+            if (game.playerXYOffset[0] < xPosition + object.width &&
+                game.playerXYOffset[0] + game.playerWidth > xPosition &&
+                game.playerXYOffset[1] < object.y + object.height &&
+                game.playerXYOffset[1] + game.playerHeight > object.y) { 
+                    if (object.type === "destination") {
+                        game.pickup = true;
+                        console.log("checkpoint")
+                    } else if (object.type === "origin" && game.pickup === true) {
+                        game.success = true;
+                        console.log("checkpoint")
                     }
+            }
         }
 }

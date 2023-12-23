@@ -21,6 +21,7 @@ window.addEventListener("DOMContentLoaded", function () {
             this.gameOver = false;
             this.pause = false
             this.menu = true
+            this.modal = true
             // game modal variables
             this.game
             this.background
@@ -31,6 +32,7 @@ window.addEventListener("DOMContentLoaded", function () {
             // game-loop-relevant objects, including game, where variables are stored 
             this.gameDimensions
             this.num = num
+            this.animationFrameId
             // some importantish numbers 
             this.gameModal = null
             this.header = document.querySelector("header")
@@ -93,7 +95,7 @@ window.addEventListener("DOMContentLoaded", function () {
             // create game objects 
 
             this.generateEnemies(2)
-            const start = new Checkpoint( 500, this.gameDimensions[1] - 100, 180, 100, "origin", 0)
+            const start = new Checkpoint( 200, this.gameDimensions[1] - 100, 180, 100, "origin", 0)
             const end = new Checkpoint( 2000 , this.gameDimensions[1] - 100, 180, 100, "destination", 1)
             this.game.checkpoints = this.game.checkpoints.concat([start, end])
             // populate enemies and checkpoints
@@ -110,6 +112,7 @@ window.addEventListener("DOMContentLoaded", function () {
             this.gameOver = false
             this.pause = false
             this.menu = false
+            cancelAnimationFrame(this.animationFrameId)
              this.draw(Math.random())
             // draw then calls itself, so this line kicks off the animation 
         }
@@ -134,8 +137,11 @@ window.addEventListener("DOMContentLoaded", function () {
             this.player.update()
             this.modalHandle()
             this.gameState()
+            
             if (this.game.run && this.run) {
-                requestAnimationFrame(e => {this.draw(this.num)})
+                this.animationFrameId = requestAnimationFrame(e => {this.draw(this.num)})
+            } else {
+                cancelAnimationFrame(animationFrameId)
             }
         }
 
@@ -255,11 +261,10 @@ window.addEventListener("DOMContentLoaded", function () {
                 // create game modal, put it in header
             }
             else {
-                debugger
                 let gameModal = document.querySelector(".gameModal");
                 gameModal?.remove();
                 this.gameModal = null;
-                // remove modal from DOM, set GameLoop instance var to null
+                // remove modal from DOM, set GameLoop instance variable to null
             }
 
         }
@@ -276,7 +281,7 @@ window.addEventListener("DOMContentLoaded", function () {
                 currentGameLoop.start()
                 currentGameLoop.modalToggle(null)
                 currentGameLoop.menu = false
-            // if there is a GameLoop in existence, reset it (extra gameloops were slowing down?)
+            // if there is a GameLoop in existence, reset it (each extra gameloop was slowing the browser down?)
             // and restart it
             } else {
                 currentGameLoop = new GameLoop(1);

@@ -14,6 +14,8 @@ export class Game {
         this.backgroundDX
         this.backgroundDXStore
         // player position variables
+        this.playerWidth = 60
+        this.playerHeight = 30
         this.playerXYOffset = [300, this.canvasHeight - 40]
         this.playerXYVelocityStore = [0, 0]
         this.playerXYVelocity = [0, 0]
