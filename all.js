@@ -80,7 +80,8 @@ window.addEventListener("DOMContentLoaded", function () {
 
         setup () {
             const backgroundImage = document.getElementById("game_background")
-            this.gameDimensions = [(window.innerWidth - 20), backgroundImage.naturalHeight]
+            // this.gameDimensions = [(window.innerWidth - 20), backgroundImage.naturalHeight]
+            this.gameDimensions = [1200, 600]
             // create new game, then add it as arg to each instance of other classes.
             // game instance contains necessary common variables
             

@@ -6,6 +6,7 @@ export class Game {
         this.canvas = document.getElementById("game_canvas")
         this.canvas.height = this.canvasHeight
         this.canvas.width = this.canvasWidth
+        debugger
         this.ctx = this.canvas.getContext("2d")
         this.backgroundDimensions = document.getElementById("game_background")
         this.num = Math.random()

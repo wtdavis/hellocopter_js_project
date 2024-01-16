@@ -33,6 +33,21 @@ body canvas {
     overflow: hidden;
     /* background: blue; */
 }
+
+
+.gamecanvas {
+    width: 1200px;
+    height: 600px;
+}
+
+.canvascontainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: calc(50vh - 300px);
+    right: calc(50vw - 600px)
+}
 /* 
 img {
     display: none;
@@ -153,7 +168,7 @@ ul li {
     --lightblue: rgb(122, 170, 241);
     --lightgrey: rgb(181, 237, 247);  
     --lightgreen: rgb(166, 243, 166);
-    --midgreen: rgb(43, 173, 43);
+    --midgreen: rgb(37, 150, 37);
     --green: rgb(26, 129, 26);
     --darkgreen: rgb(1, 56, 1);
 }       
