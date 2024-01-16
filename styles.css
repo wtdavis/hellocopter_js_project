@@ -10,7 +10,7 @@ p, img, canvas, div, h1, h2, h3, body, li, ul {
 
 }
 
-h1 {
+/* h1 {
     color: rgb(223, 182, 49);
     font-weight:900;
     background-color: var(--darkgreen);
@@ -18,7 +18,7 @@ h1 {
     padding: 20px;
     border-radius: 10px;
 
-}
+} */
 
 body {
     background-color:var(--midgreen);
@@ -28,11 +28,14 @@ body {
 
 body canvas {
     /* position: absolute; */
-    border: 5px solid rgba(255, 255, 0, 0.705);
-    box-shadow: 2px 2px 10px black;
+    /* border: 5px solid rgba(255, 255, 0, 0.705); */
+    /* box-shadow: 2px 2px 10px black; */
     overflow: hidden;
+    border-radius: 15px;
+    
     /* background: blue; */
 }
+
 
 
 .gamecanvas {
@@ -46,7 +49,8 @@ body canvas {
     justify-content: center;
     position: absolute;
     top: calc(50vh - 300px);
-    right: calc(50vw - 600px)
+    right: calc(50vw - 600px);
+    z-index: 100
 }
 /* 
 img {
@@ -58,21 +62,16 @@ img {
 
 /* --------------------------- */
 header {
-    /* position: absolute; */
     display: flex;
     justify-content: space-around;
     align-items:center;
 }
-#title{
-    /* left: 20px; */
-}
+
 #github_logo {
     display: inline-block;
     max-height: 60px;
     width: auto;    
     margin-right: 10px;
-    /* margin-bottom: 5px; */
-    /* color: white; */
 }
 
 #linkedin_logo {
@@ -80,9 +79,13 @@ header {
     height: 60px;
     width: auto;
 }
-#author {
-    font-size: 30px;
-    /* margin-top: 70px; */
+
+.headertitle {
+    background-color: none;
+    color: var(--darkgreen);
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 60px;
+    /* padding-top: 10px; */
 }
 
 
@@ -95,52 +98,22 @@ footer {
 
 /* ----------------------- */
 
-#backstory {
-    width: 400px;
-    border: 3px solid lightblue;
-    border-radius: 10px;
-    background-color: var(--darkgreen);
-    text-align: center;
-    margin: 10px;
-    padding: 10px;
-}
 
-/* manual */
 
 ul li {
     margin: auto;
     text-align: center;
 }
 
-#manual-header {
-    text-align: center;
-}
 
-#manual {
-    display:flex;
-    flex-direction: column;
-    border: 3px solid lightblue;
-    border-radius: 10px;
-    background-color: var(--darkgreen);
-    padding: 20px;
-    /* margin: 10px; */
-}
 
-#instructions {
-    text-align: left;
-    justify-content: center;
-    padding-right: 20px;
-    /* left: 30px; */
-    /* background-color: blue; */
-
-}
 
 .gameModal {
     position: absolute;
-    top: calc(50vh - 250px);
-    left: calc(50vw - 500px);
-    height: 480px;
-    width: 1000px;
+    top: calc(50vh - 150px);
+    left: calc(50vw - 250px);
+    height: 300px;
+    width: 500px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -148,6 +121,7 @@ ul li {
     background-color: var(--darkgreen);
     border: 2px solid purple;
     color: black;
+    z-index: 101;
 }
 
 .gameModalHidden {

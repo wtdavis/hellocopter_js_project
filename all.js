@@ -194,7 +194,7 @@ window.addEventListener("DOMContentLoaded", function () {
 
             for (let i=0;i<modalTextList.length;i++) {
                 let element = document.createElement("p")
-                element.setAttribute("class", `modalText modalText${i+1}`)
+                element.setAttribute("class", `modalText modalText${i}`)
                 element.innerText = modalTextList[i]
 
                 this.gameModal.appendChild(element)
