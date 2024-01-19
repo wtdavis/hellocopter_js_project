@@ -106,8 +106,6 @@ ul li {
 }
 
 
-
-
 .gameModal {
     position: absolute;
     top: calc(50vh - 150px);
@@ -120,21 +118,33 @@ ul li {
     justify-content: center;
     background-color: var(--darkgreen);
     border: 2px solid purple;
+    border-radius: 15px;
     color: black;
     z-index: 101;
+    transition-duration: 1s;
+    
 }
 
 .gameModalHidden {
     position: absolute;
-    display: hidden;
+    display: none;
     background-color: var(--darkblue);
     border: 2px solid purple;
     color: black;
+    transition-duration: 1s;
 }
 
 .modalText {
+    position: relative;
     color: white
 }
+
+.modalText0 {
+    font-size: 30px;
+}
+
+
+
 
 .main {
     --darkblue:  rgb(1, 1, 150);
@@ -146,6 +156,8 @@ ul li {
     --green: rgb(26, 129, 26);
     --darkgreen: rgb(1, 56, 1);
 }       
+
+
 
 .hidden {
     display: none;

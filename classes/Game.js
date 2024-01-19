@@ -6,7 +6,6 @@ export class Game {
         this.canvas = document.getElementById("game_canvas")
         this.canvas.height = this.canvasHeight
         this.canvas.width = this.canvasWidth
-        debugger
         this.ctx = this.canvas.getContext("2d")
         this.backgroundDimensions = document.getElementById("game_background")
         this.num = Math.random()
@@ -17,7 +16,7 @@ export class Game {
         // player position variables
         this.playerWidth = 60
         this.playerHeight = 30
-        this.playerXYOffset = [300, this.canvasHeight - 40]
+        this.playerXYOffset = [300, this.canvasHeight - 50]
         this.playerXYVelocityStore = [0, 0]
         this.playerXYVelocity = [0, 0]
         // game objects
@@ -36,13 +35,13 @@ export class Game {
         }
 
         reset () {
-            this.backgroundXOffset = 5;
+            this.backgroundXOffset = 1;
             this.backgroundDX = 0;
             this.backgroundDXStore = 0;
             // reset background
             this.playerXYVelocityStore = [0, 0]
             this.playerXYVelocity = [0, 0]
-            this.setPlayerXYOffset([300, this.canvasHeight - 40]);
+            this.setPlayerXYOffset([300, this.canvasHeight - 50]);
             this.alive = true;
             this.pickup = false;
             this.success = false;

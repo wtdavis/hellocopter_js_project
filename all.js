@@ -6,10 +6,10 @@ import { Background } from "./classes/Background.js"
 import { InputHandler } from "./classes/Input.js"
 import { Game } from "./classes/Game.js"
 import { GameOver, Run, checkpoints, projectiles, enemies, gameOver } from "./utils.js"
+import Modal from "./classes/Modal.js"
 // import Canvas from "./canvas.js" ****modules! refactor
 window.addEventListener("DOMContentLoaded", function () {
 
-// let gameLoops = []
 
     class GameLoop {
         constructor (num) {
@@ -18,11 +18,13 @@ window.addEventListener("DOMContentLoaded", function () {
             this.pickup
             this.run = true;
             // game status variables
-            this.gameOver = false;
-            this.pause = false
-            this.menu = true
-            this.modal = true
-            // game modal variables
+
+            // this.gameOver = false;
+            // this.pause = false
+            // this.menu = true
+            // this.modal = true
+            // game modal variables --> moduled!
+
             this.game
             this.background
             this.projectileHandler
@@ -36,12 +38,12 @@ window.addEventListener("DOMContentLoaded", function () {
             // some importantish numbers 
             this.gameModal = null
             this.header = document.querySelector("header")
+            this.modalText0;
             this.modalText1;
             this.modalText2;
             this.modalText3;
             this.modalText4;
             this.modalText5;
-            this.modalText6;
             // game modal objects and state handling 
         }
 
@@ -57,7 +59,6 @@ window.addEventListener("DOMContentLoaded", function () {
             if (this.pickup === true && this.success === true && this.alive === true) {
                 this.gameOver = true
             }
-
         }
 
         generateEnemies (numEnemies) {
@@ -95,6 +96,10 @@ window.addEventListener("DOMContentLoaded", function () {
             const input = new InputHandler(this.game)
             // create game objects 
 
+            this.modal = new Modal()
+            this.modal.modalHide(false)
+            this.modal.setModalText("start")
+
             this.generateEnemies(2)
             const start = new Checkpoint( 200, this.gameDimensions[1] - 100, 180, 100, "origin", 0)
             const end = new Checkpoint( 2000 , this.gameDimensions[1] - 100, 180, 100, "destination", 1)
@@ -123,7 +128,7 @@ window.addEventListener("DOMContentLoaded", function () {
             this.player.reset();
             this.enemyHandler.reset();
         }
-
+  
         draw(num) {
             if (num) {
                 this.num = num
@@ -149,47 +154,46 @@ window.addEventListener("DOMContentLoaded", function () {
 
         setModalText (status) {
     
-
             if (status === "pause"){
-                this.modalText1 = null
+                this.modalText0 = "Paused!"
+                this.modalText1 = "Press \"p\" to unpause"
                 this.modalText2 = null
                 this.modalText3 = null
                 this.modalText4 = null
-                this.modalText5 = "Paused!"
-                this.modalText6 = "Press \"p\" to unpause"
+                this.modalText5 = null
             }
             if (status === "defeat") {
-                this.modalText1 = null
+                this.modalText0 = "Defeat!"
+                this.modalText1 = "Don't give up! Press space to restart!"
                 this.modalText2 = null
                 this.modalText3 = null
                 this.modalText4 = null
-                this.modalText5 =  "Defeat!"
-                this.modalText6 = "Don't give up! Press space to restart!"
+                this.modalText5 = null
             }
             if (status === "success") {
-                this.modalText1 = null
+                this.modalText0 = "Success!"
+                this.modalText1 = "You rescued our capybara friend! Champagne!"
                 this.modalText2 = null
                 this.modalText3 = null
                 this.modalText4 = null
-                this.modalText5 = "Success!"
-                this.modalText6 = "You rescued our capybara friend! Champagne!"
+                this.modalText5 = null
             }
             if (status === "start") {
-                this.modalText1 = "Welcome to HelloCopter! We at CapyCorp need you to rescue a capybara! "
-                this.modalText2 = " evil Dr 404 kidnapped her for experiments! Hurry!"
-                this.modalText3 = "Fly to the other side of the map, rescue her from Dr 404's Evil Tower of Science,"
-                this.modalText4 = "and fly her back here!"
+                this.modalText0 = "Welcome to HelloCopter! We at CapyCorp need you to rescue a capybara!"
+                this.modalText1 = "The evil Dr. 404 kidnapped her for experiments! Hurry!"
+                this.modalText2 = "Fly to the other side of the map, rescue her from Dr 404's Evil Tower of Science,"
+                this.modalText3 = "and fly her back here!"
+                this.modalText4 = null
                 this.modalText5 = null
-                this.modalText6 = null
             }
 
             let modalTextList = [
+                this.modalText0,
                 this.modalText1,
                 this.modalText2,
                 this.modalText3,
                 this.modalText4,
-                this.modalText5,
-                this.modalText6
+                this.modalText5
                 ]
 
             for (let i=0;i<modalTextList.length;i++) {
@@ -228,19 +232,19 @@ window.addEventListener("DOMContentLoaded", function () {
             // header.append(gameModal)
             
 
-            if (this.pause) {
-                this.modalToggle(true);
-                this.setModalText("pause")
-            } else if (this.gameOver && this.success) {
-                this.modalToggle(true);
-                this.setModalText("success")
-            } else if (this.gameOver && !this.success) {
-                this.modalToggle(true);
-                this.setModalText("defeat")
-            } else if (this.menu) {
-                this.modalToggle(true);
-                this.setModalText("start")
-            } 
+            // if (this.pause) {
+            //     this.modalToggle(true);
+            //     this.setModalText("pause")
+            // } else if (this.gameOver && this.success) {
+            //     this.modalToggle(true);
+            //     this.setModalText("success")
+            // } else if (this.gameOver && !this.success) {
+            //     this.modalToggle(true);
+            //     this.setModalText("defeat")
+            // } else if (this.menu) {
+            //     this.modalToggle(true);
+            //     this.setModalText("start")
+            // } 
             
             // else {
             //     this.modalToggle(null)
@@ -251,27 +255,33 @@ window.addEventListener("DOMContentLoaded", function () {
             // the above 4 lines break the program idk why
         }
 
-        modalToggle (on) {
-            // "on" paramater should be true or null, to add or remove modal
-            if (on) {
-                this.gameModal = document.createElement("div");
-                this.gameModal.setAttribute("class", "gameModal");
-                this.gameModal.setAttribute("id", "modal");
-                let header = document.querySelector("header");
-                header.appendChild(this.gameModal);
-                // create game modal, put it in header
-            }
-            else {
-                let gameModal = document.querySelector(".gameModal");
-                gameModal?.remove();
-                this.gameModal = null;
-                // remove modal from DOM, set GameLoop instance variable to null
-            }
+        // modalToggle (on) {
+        //     // "on" paramater should be true or null, to add or remove modal
+        //     if (on) {
+        //         this.gameModal = document.createElement("div");
+        //         this.gameModal.setAttribute("class", "gameModal");
+        //         this.gameModal.setAttribute("id", "modal");
+        //         let header = document.querySelector("header");
+        //         header.appendChild(this.gameModal);
+        //         // create game modal, put it in header
+        //     }
+        //     else {
+        //         let gameModal = document.querySelector(".gameModal");
+        //         gameModal?.remove();
+        //         this.gameModal = null;
+        //         // remove modal from DOM, set GameLoop instance variable to null
+        //     }
 
-        }
+        // }
     }
 
     let currentGameLoop;
+
+    currentGameLoop = new GameLoop(1);
+    currentGameLoop.setup();
+    // currentGameLoop.modalToggle(null)
+    currentGameLoop.start()
+    currentGameLoop.menu = true
     
     window.addEventListener("keydown", function (e) {
         if (e.key === " ") {
@@ -279,19 +289,20 @@ window.addEventListener("DOMContentLoaded", function () {
             if (currentGameLoop) {
                 console.log("game reset")
                 currentGameLoop.reset();
+                // currentGameLoop.modalToggle(null)
                 currentGameLoop.start()
-                currentGameLoop.modalToggle(null)
-                currentGameLoop.menu = false
+                // currentGameLoop.menu = true
             // if there is a GameLoop in existence, reset it (each extra gameloop was slowing the browser down?)
             // and restart it
-            } else {
-                currentGameLoop = new GameLoop(1);
-                currentGameLoop.setup();
-                currentGameLoop.start()
-                currentGameLoop.modalToggle(null)
-                currentGameLoop.menu = false
-                // if there is no GameLoop, make one (the first one) and start it
-            }
+            } 
+            // else {
+            //     currentGameLoop = new GameLoop(1);
+            //     currentGameLoop.setup();
+            //     currentGameLoop.start()
+            //     currentGameLoop.modalToggle(null)
+            //     currentGameLoop.menu = false
+            //     // if there is no GameLoop, make one (the first one) and start it
+            // }
         }} 
     )
 
@@ -302,19 +313,37 @@ window.addEventListener("DOMContentLoaded", function () {
                 currentGameLoop.menu = false
                 currentGameLoop.pause = true
                 // currentGameLoop.modalToggle(true)
-                currentGameLoop.setModalText("pause")
+                // currentGameLoop.setModalText("pause")
                 // pause and toggle modal
             } else {
                 currentGameLoop.run = true
                 currentGameLoop.pause = false
                 currentGameLoop.menu = false
-                currentGameLoop.modalToggle(null)
+                // currentGameLoop.modalToggle(null)
                 currentGameLoop.draw()
                 // unpause and toggle modal
             }
         }}
     )
 
+
+    window.addEventListener("keydown", function (e) {
+        if (e.key.toLowerCase() === "g" ) {
+            currentGameLoop.modal.test()
+            // debugger
+            // let a = currentGameLoop
+            // // a.run = true
+            // // a.pause = false
+            // if (a.menu === true) {
+            //     a.menu = false
+            //     // a.modalToggle(null)
+            //     a.start()
+            // } else {
+            //     // a.modalToggle(true)
+            // }
+
+        }
+    })
 
     // window.addEventListener("keydown", function (e) {
     //     if (e.key === "q") {
@@ -350,41 +379,6 @@ window.addEventListener("DOMContentLoaded", function () {
 
 
 
-
-
-
-// let GameOver = false
-// let Run = false
-
-// function gameOver(player) {
-//     if (!player.alive)
-//     {GameOver =  true}
-//     if (player.success)
-//     {GameOver = true}
-//     if (GameOver === true && player.success === false) 
-//         {splash ("Defeat! Press R to Restart"); window.addEventListener('keydown', function (e) {if (e.key === 'r'){ restart()}})}
-//         else if (GameOver === true && player.success === true)
-//         {splash("Victory! Press R to Restart"); window.addEventListener('keydown', function (e) {if (e.key === 'r'){ restart()}})}
-//     // {const endGame = document.createElement("h1")
-//     // endGame.textContent = "Game Over"}
-// }
-
-
-
-// let checkpoints = []
-// let projectiles = []
-// let enemies = []
-
-
-// const canvas = document.getElementById("game_canvas")
-// const ctx = canvas.getContext("2d")
-
-// const backgroundImage = document.getElementById("game_background")
-// canvas.width = (window.innerWidth - 20)
-// canvas.height = backgroundImage.naturalHeight
-
-// const start = new Checkpoint( 50, canvas.height - 50, 100, 50, "origin")
-// const end = new Checkpoint( 2200 , canvas.height - 50, 100, 50, "destination")
 
 
 
@@ -424,6 +418,7 @@ window.addEventListener("DOMContentLoaded", function () {
 //     ctx.textAlign="center"
 //     ctx.fillText(fillText, canvas.width/2, canvas.height/2)
 // }
+
 
 // function restart(){
 
