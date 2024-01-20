@@ -38,7 +38,7 @@ export class Background {
         } else if (playerX > this.canvasWidth - edgeLimit) {
             // this.dXDY[0] = (playerX - rightEdgeLimit) / 50
     this.dXDY[0] = 5 * ((playerX - (this.canvasWidth - edgeLimit)) / edgeLimit)
-    console.log(this.dXDY[0])
+    // console.log(this.dXDY[0])
     // test
             // console.log("right boundary")
 

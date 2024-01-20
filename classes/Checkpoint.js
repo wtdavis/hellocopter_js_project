@@ -65,10 +65,10 @@ export class Checkpoint {
                 game.playerXYOffset[1] + game.playerHeight > object.y) { 
                     if (object.type === "destination") {
                         game.pickup = true;
-                        console.log("checkpoint")
+                        // console.log("checkpoint")
                     } else if (object.type === "origin" && game.pickup === true) {
                         game.success = true;
-                        console.log("checkpoint")
+                        // console.log("checkpoint")
                     }
             }
         }

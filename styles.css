@@ -132,15 +132,17 @@ ul li {
     border: 2px solid purple;
     color: black;
     transition-duration: 1s;
+    justify-content: center;
 }
 
 .modalText {
-    position: relative;
+    /* position: relative; */
+    justify-content: center;
     color: white
 }
 
 .modalText0 {
-    font-size: 30px;
+    font-size: 25px;
 }
 
 
