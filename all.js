@@ -202,8 +202,8 @@ window.addEventListener("DOMContentLoaded", function () {
             }
         }}
     )
-
-
+  
+  
     window.addEventListener("keydown", function (e) {
         if (e.key.toLowerCase() === "g" ) {
             currentGameLoop.modal.modalHide(true)

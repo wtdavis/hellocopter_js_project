@@ -12,41 +12,43 @@
     <link rel="icon" type="image/x-icon" href="./assets/favicon.png">
 </head>
 <body class="main">
-    <header id="header"> 
-        <!-- <p class="headerauthor" id="author"> William Davis 2023 </p> -->
-        <h1 class="headertitle" id="title"> CapyCopter </h1>
-        <div class="socialsContainer">
-            <nav id="links"> 
-                <a href="https://github.com/wtdavis/hellocopter_js_project" target="_blank"> 
-                    <img id="github_logo" src="./assets/Github_logo_PNG1.png"> 
-                </a>
-                <a href="https://www.linkedin.com/in/william-davis-9390801ab" target="_blank">
-                     <img id="linkedin_logo" src="./assets/linkedin2.png"> 
+    <div class="gameScreen">
+        <header id="header"> 
+            <!-- <p class="headerauthor" id="author"> William Davis 2023 </p> -->
+            <h1 class="headertitle" id="title"> CapyCopter </h1>
+            <div class="socialsContainer">
+                <nav id="links">
+                    <a href="https://github.com/wtdavis/hellocopter_js_project" target="_blank">
+                        <img class="logo githublogo" src="./assets/github.png"/>
                     </a>
-            </nav>
-        </div>
-    </header>  
-
-<!-- 
-    <div class="newGameModal">
-        <p>
-            Welcome to HelloCopter! We need your help: Dr. 404 has kidnapped one of our friends! 
-        </p>
-        <p>
-            We need you to fly to fly across and rescue her from his tower!
-        </p>
-        <p>
-            Return to our peaceful Capy-Cottage when you have her! Please!
-        </p>
-        <p>
-            Press Space to start. Press P to pause
-        </p>
+                    <a href="https://www.linkedin.com/in/william-davis-9390801ab" target="_blank">
+                        <img class="logo linkedinlogo" src="./assets/linked.png"/>
+                    </a>
+                </nav>
+            </div>
+        </header>  
+        
+        <!-- 
+            <div class="newGameModal">
+                <p>
+                    Welcome to HelloCopter! We need your help: Dr. 404 has kidnapped one of our friends! 
+                </p>
+                <p>
+                    We need you to fly to fly across and rescue her from his tower!
+                </p>
+                <p>
+                    Return to our peaceful Capy-Cottage when you have her! Please!
+                </p>
+                <p>
+                    Press Space to start. Press P to pause
+                </p>
     </div> -->
-
+    
     <div class="canvascontainer">
         <canvas id="game_canvas" class="gamecanvas"> game content here</canvas>
     </div>
-
+    
+</div>
     <img id="game_sprites" class="hidden" src="./assets/new_sprites.png">
     <img id="explosion_sprites" class="hidden" src="./assets/explosions.png">
     <img id="base_sprites" class="hidden" src="./assets/bases.png">
