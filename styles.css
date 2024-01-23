@@ -24,6 +24,8 @@ body {
     background-color:var(--midgreen);
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 body canvas {
@@ -47,15 +49,12 @@ body canvas {
     display: flex;
     align-items: center;
     justify-content: center;
-    position: absolute;
+    /* position: absolute; */
     top: calc(50vh - 300px);
     right: calc(50vw - 600px);
     z-index: 100
 }
-/* 
-img {
-    display: none;
-} */
+
 .hidden {
     display: none;
 }
@@ -82,7 +81,7 @@ header {
 
 .headertitle {
     background-color: none;
-    color: var(--darkgreen);
+    color: white;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 60px;
     /* padding-top: 10px; */
@@ -146,6 +145,10 @@ ul li {
 }
 
 /* logos! --------------- */
+.socialLinksContainer {
+    
+}
+
 .logo {
     max-width: 60px;
 }
