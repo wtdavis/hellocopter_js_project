@@ -95,6 +95,17 @@ footer {
     justify-content: space-around;
 }
 
+
+.footerAuthor {
+    /* position: absolute; */
+    display: flex;
+    justify-content: center;
+    margin-top: 100px;
+    bottom: 30px;
+    font-size: 18px;
+    color: white;
+    left: calc(50vw - 100px)
+}
 /* ----------------------- */
 
 
@@ -146,7 +157,8 @@ ul li {
 
 /* logos! --------------- */
 .socialLinksContainer {
-    
+    position: absolute;
+    right: calc( 50vw - 600px);
 }
 
 .logo {

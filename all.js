@@ -81,6 +81,7 @@ window.addEventListener("DOMContentLoaded", function () {
         }
 
         generateEnemies (numEnemies) {
+            this.game.enemies = []
             //enemy parameters: x, y, width, height, lift, speed, gun, timer, gunAngle, bulletSize
             for (let i=0;i<numEnemies; i++) {
                 let x = this.gameDimensions[0]/(Math.random())
@@ -88,9 +89,9 @@ window.addEventListener("DOMContentLoaded", function () {
                 let width = 50
                 let height = 50
                 let lift = 0
-                let speed = Math.random() * 2
+                let speed = (Math.random() * 2) - 1
                 let gun = true
-                let timer = Math.random() * 10 + 100
+                let timer = Math.random() * 5 + 200
                 let gunAngle = [Math.random() * 2, Math.random() * 3]
                 let bulletSize = [Math.random() * 5 + 3 , Math.random() * 5 + 3]
                 this.game.enemies.push(new Enemy(this.game, x, y, width, height, lift, speed, gun, timer, gunAngle, bulletSize))
@@ -118,7 +119,7 @@ window.addEventListener("DOMContentLoaded", function () {
             this.modal.modalHide(false)
             this.modal.setModalText("start")
 
-            this.generateEnemies(2)
+            this.generateEnemies(12)
             const start = new Checkpoint( 200, this.gameDimensions[1] - 100, 180, 100, "origin", 0)
             const end = new Checkpoint( 2000 , this.gameDimensions[1] - 100, 180, 100, "destination", 1)
             this.game.checkpoints = this.game.checkpoints.concat([start, end])
@@ -142,6 +143,7 @@ window.addEventListener("DOMContentLoaded", function () {
             this.game.reset();
             this.player.reset();
             this.enemyHandler.reset();
+            this.generateEnemies(12)
         }
   
         draw(num) {

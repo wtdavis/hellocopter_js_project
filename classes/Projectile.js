@@ -21,7 +21,7 @@ export class Projectile {
         this.collisionPos = this.x - background
         ctx.fillRect(this.collisionPos, this.y, this.width, this.height)
         // debugger
-    }
+    } 
 
     update() {
         this.x += this.speed
@@ -29,8 +29,8 @@ export class Projectile {
     }
 
     isRelevant() {
-        let gameWidth = this.game.backgroundDimensions.width
-        let gameHeight = this.game.backgroundDimensions.height
+        let gameWidth = this.game.canvasWidth + this.game.backgroundXOffset
+        let gameHeight = this.game.canvasHeight
         if (this.y + this.height < 0 ||
         this.y > gameHeight ||
         this.x + this.width < 0 ||
@@ -50,6 +50,7 @@ export class ProjectileHandler  {
 
     update (){
         let projectiles = this.game.projectiles
+        debugger
         // console.log(projectiles[0]?.x)
         for (let i = 0; i < projectiles.length; i++) {
             let currentProjectile = projectiles[i];
